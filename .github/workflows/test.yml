@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup-tinygo ${{ matrix.tinygo }}
+      - name: Test on ${{ matrix.os }}
         uses: ./
         with:
           token: ${{ secrets.GITCODE_TOKEN }}

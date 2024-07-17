@@ -66,8 +66,8 @@ export async function getGitLFSObject(token: string): Promise<LFSObject> {
   const lfsUrl = `https://gitcode.com/Cangjie/${repo}.git/info/lfs/objects/batch`;
 
   core.debug(`Fetching lfs object: ${sha256}`);
-  const payload = JSON.stringify(
-    {
+  const payload
+    = {
       operation: "download",
       transfers: ["basic"],
       ref: { name: "refs/heads/main" },
@@ -78,10 +78,7 @@ export async function getGitLFSObject(token: string): Promise<LFSObject> {
         },
       ],
       hash_algo: "sha256",
-    },
-    null,
-    2,
-  );
+    };
   const lfsResult = (await client.postJson<GitLFSResponseRoot>(
     lfsUrl,
     payload,
