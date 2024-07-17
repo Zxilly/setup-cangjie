@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  verify:
+    name: Verify setup
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup-tinygo ${{ matrix.tinygo }}
+        uses: ./
+        with:
+          token: ${{ secrets.GITCODE_TOKEN }}
+
+      - name: Verify setup
+        run: |
+          cjc --version
