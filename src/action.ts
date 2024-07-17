@@ -20,6 +20,6 @@ export async function action() {
     await test();
   }
   catch (error: any) {
-    core.setFailed(error.message);
+    core.setFailed(error.toString());
   }
 }

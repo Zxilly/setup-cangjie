@@ -68,6 +68,7 @@ export async function test() {
   if (found.length === 0) {
     throw new Error("cjc not found");
   }
+  core.info(`Found cjc at ${found}`);
 
   const which = await io.which("cjc");
   core.info(`Found cjc at ${which}`);
