@@ -1,4 +1,5 @@
 import * as process from "node:process";
+import path from "node:path";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
 import { getArch } from "./sys";
@@ -6,6 +7,8 @@ import { printCommand } from "./utils";
 
 export function configureEnv(dir: string) {
   core.info("Configuring environment");
+
+  dir = path.join(dir, "cangjie");
 
   switch (process.platform) {
     case "win32":
