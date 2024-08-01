@@ -12,8 +12,5 @@ export default antfu({
 }, {
     ignores: [
         "dist",
-        "coverage",
-        "src/generated/schema.ts",
-        "src/runtime/*",
     ],
 });
