@@ -524,8 +524,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.OidcClient = void 0;
-const http_client_1 = __nccwpck_require__(6372);
-const auth_1 = __nccwpck_require__(8603);
+const http_client_1 = __nccwpck_require__(2066);
+const auth_1 = __nccwpck_require__(7433);
 const core_1 = __nccwpck_require__(9093);
 class OidcClient {
     static createHttpClient(allowRetry = true, maxRetry = 10) {
@@ -1729,7 +1729,7 @@ class ExecState extends events.EventEmitter {
 
 /***/ }),
 
-/***/ 8603:
+/***/ 7433:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -1817,7 +1817,7 @@ exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHand
 
 /***/ }),
 
-/***/ 6372:
+/***/ 2066:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -1859,7 +1859,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HttpClient = exports.isHttps = exports.HttpClientResponse = exports.HttpClientError = exports.getProxyUrl = exports.MediaTypes = exports.Headers = exports.HttpCodes = void 0;
 const http = __importStar(__nccwpck_require__(3685));
 const https = __importStar(__nccwpck_require__(5687));
-const pm = __importStar(__nccwpck_require__(2067));
+const pm = __importStar(__nccwpck_require__(7866));
 const tunnel = __importStar(__nccwpck_require__(4225));
 const undici_1 = __nccwpck_require__(7181);
 var HttpCodes;
@@ -2476,7 +2476,7 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 
 /***/ }),
 
-/***/ 2067:
+/***/ 7866:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -2498,11 +2498,11 @@ function getProxyUrl(reqUrl) {
     })();
     if (proxyVar) {
         try {
-            return new URL(proxyVar);
+            return new DecodedURL(proxyVar);
         }
         catch (_a) {
             if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://'))
-                return new URL(`http://${proxyVar}`);
+                return new DecodedURL(`http://${proxyVar}`);
         }
     }
     else {
@@ -2560,6 +2560,19 @@ function isLoopbackAddress(host) {
         hostLower.startsWith('127.') ||
         hostLower.startsWith('[::1]') ||
         hostLower.startsWith('[0:0:0:0:0:0:0:1]'));
+}
+class DecodedURL extends URL {
+    constructor(url, base) {
+        super(url, base);
+        this._decodedUsername = decodeURIComponent(super.username);
+        this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+        return this._decodedUsername;
+    }
+    get password() {
+        return this._decodedPassword;
+    }
 }
 //# sourceMappingURL=proxy.js.map
 
@@ -3330,7 +3343,7 @@ const fs = __importStar(__nccwpck_require__(7147));
 const mm = __importStar(__nccwpck_require__(2346));
 const os = __importStar(__nccwpck_require__(2037));
 const path = __importStar(__nccwpck_require__(1017));
-const httpm = __importStar(__nccwpck_require__(6372));
+const httpm = __importStar(__nccwpck_require__(2066));
 const semver = __importStar(__nccwpck_require__(6843));
 const stream = __importStar(__nccwpck_require__(2781));
 const util = __importStar(__nccwpck_require__(3837));
@@ -28923,7 +28936,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getGitLFSObject = getGitLFSObject;
-const http = __importStar(__nccwpck_require__(6372));
+const http = __importStar(__nccwpck_require__(2066));
 const core = __importStar(__nccwpck_require__(9093));
 const sys_1 = __nccwpck_require__(3156);
 const utils_1 = __nccwpck_require__(442);
@@ -29082,7 +29095,11 @@ function configureLinuxEnv(dir) {
     core.addPath(`${dir}/bin`);
     core.addPath(`${dir}/tools/bin`);
     core.addPath(`${process.env.HOME}/.cjpm/bin`);
-    core.exportVariable("LD_LIBRARY_PATH", `${dir}/runtime/lib/linux_${(0, sys_1.getArch)()}_llvm:${dir}/tools/lib:${process.env.LD_LIBRARY_PATH}`);
+    let ldPath = `${dir}/runtime/lib/linux_${(0, sys_1.getArch)()}_llvm:${dir}/tools/lib`;
+    if (process.env.LD_LIBRARY_PATH) {
+        ldPath = `${ldPath}:${process.env.LD_LIBRARY_PATH}`;
+    }
+    core.exportVariable("LD_LIBRARY_PATH", ldPath);
 }
 function configureMacOSEnv(dir) {
     // export PATH=${CANGJIE_HOME}/bin:${CANGJIE_HOME}/tools/bin:$PATH:${HOME}/.cjpm/bin
@@ -29092,7 +29109,11 @@ function configureMacOSEnv(dir) {
     core.addPath(`${dir}/bin`);
     core.addPath(`${dir}/tools/bin`);
     core.addPath(`${process.env.HOME}/.cjpm/bin`);
-    core.exportVariable("DYLD_LIBRARY_PATH", `${dir}/runtime/lib/darwin_${(0, sys_1.getArch)()}_llvm:${dir}/tools/lib:${process.env.DYLD_LIBRARY_PATH}`);
+    let ldPath = `${dir}/runtime/lib/darwin_${(0, sys_1.getArch)()}_llvm:${dir}/tools/lib`;
+    if (process.env.DYLD_LIBRARY_PATH) {
+        ldPath = `${ldPath}:${process.env.DYLD_LIBRARY_PATH}`;
+    }
+    core.exportVariable("DYLD_LIBRARY_PATH", ldPath);
 }
 async function test() {
     const found = await io.findInPath("cjc");

@@ -51,7 +51,11 @@ function configureLinuxEnv(dir: string) {
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
-  core.exportVariable("LD_LIBRARY_PATH", `${dir}/runtime/lib/linux_${getArch()}_llvm:${dir}/tools/lib:${process.env.LD_LIBRARY_PATH}`);
+  let ldPath = `${dir}/runtime/lib/linux_${getArch()}_llvm:${dir}/tools/lib`;
+  if (process.env.LD_LIBRARY_PATH) {
+    ldPath = `${ldPath}:${process.env.LD_LIBRARY_PATH}`;
+  }
+  core.exportVariable("LD_LIBRARY_PATH", ldPath);
 }
 
 function configureMacOSEnv(dir: string) {
@@ -63,7 +67,12 @@ function configureMacOSEnv(dir: string) {
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
-  core.exportVariable("DYLD_LIBRARY_PATH", `${dir}/runtime/lib/darwin_${getArch()}_llvm:${dir}/tools/lib:${process.env.DYLD_LIBRARY_PATH}`);
+  let ldPath = `${dir}/runtime/lib/darwin_${getArch()}_llvm:${dir}/tools/lib`;
+  if (process.env.DYLD_LIBRARY_PATH) {
+    ldPath = `${ldPath}:${process.env.DYLD_LIBRARY_PATH}`;
+  }
+
+  core.exportVariable("DYLD_LIBRARY_PATH", ldPath);
 }
 
 export async function test() {
