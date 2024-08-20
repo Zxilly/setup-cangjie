@@ -32,7 +32,6 @@ function configureWindowsEnv(dir: string) {
   //
   // export PATH=${CANGJIE_HOME}/bin:${CANGJIE_HOME}/tools/bin:${CANGJIE_HOME}/tools/lib:${CANGJIE_HOME}/runtime/lib/windows_x86_64_llvm:${CANGJIE_HOME}/third_party/llvm/lldb/lib:$PATH:${USERPROFILE}/.cjpm/bin
 
-  core.exportVariable("CANGJIE_HOME", dir);
   core.addPath(`${dir}\\bin`);
   core.addPath(`${dir}\\tools\\bin`);
   core.addPath(`${dir}\\tools\\lib`);
@@ -47,7 +46,6 @@ function configureLinuxEnv(dir: string) {
   // export PATH=${CANGJIE_HOME}/bin:${CANGJIE_HOME}/tools/bin:$PATH:${HOME}/.cjpm/bin
   // export LD_LIBRARY_PATH=${CANGJIE_HOME}/runtime/lib/linux_${hw_arch}_llvm:${CANGJIE_HOME}/tools/lib:${LD_LIBRARY_PATH}
 
-  core.exportVariable("CANGJIE_HOME", dir);
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
@@ -63,7 +61,6 @@ function configureMacOSEnv(dir: string) {
   // export DYLD_LIBRARY_PATH=${CANGJIE_HOME}/runtime/lib/darwin_${hw_arch}_llvm:${CANGJIE_HOME}/tools/lib:${DYLD_LIBRARY_PATH}
   // export CANGJIE_HOME=${script_dir}
 
-  core.exportVariable("CANGJIE_HOME", dir);
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);

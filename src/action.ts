@@ -15,9 +15,13 @@ export async function action() {
 
     const dir = await useCacheOrDownload(object);
 
-    configureEnv(dir);
+    const setenv = core.getInput("setenv");
 
-    await test();
+    core.exportVariable("CANGJIE_HOME", dir);
+    if (setenv === "true") {
+      configureEnv(dir);
+      await test();
+    }
   }
   catch (error: any) {
     core.setFailed(error.toString());

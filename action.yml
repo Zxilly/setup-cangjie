@@ -8,6 +8,10 @@ inputs:
   token:
     description: 'The token to access the cangjie gitcode repository'
     required: true
+  setenv:
+    description: 'Set the environment variable for cangjie'
+    required: false
+    default: 'true'
 runs:
   using: 'node20'
   main: 'dist/index.js'
