@@ -28819,8 +28819,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.action = action;
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(9093));
 const gitcode_1 = __nccwpck_require__(1601);
 const download_1 = __nccwpck_require__(758);
@@ -28835,7 +28839,8 @@ async function action() {
         const object = await (0, gitcode_1.getGitLFSObject)(token);
         const dir = await (0, download_1.useCacheOrDownload)(object);
         const setenv = core.getInput("setenv");
-        core.exportVariable("CANGJIE_HOME", dir);
+        const cjBase = node_path_1.default.join(dir, "cangjie");
+        core.exportVariable("CANGJIE_HOME", cjBase);
         if (setenv === "true") {
             (0, path_1.configureEnv)(dir);
             await (0, path_1.test)();
@@ -29048,21 +29053,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.configureEnv = configureEnv;
 exports.test = test;
 const process = __importStar(__nccwpck_require__(7742));
-const node_path_1 = __importDefault(__nccwpck_require__(9411));
 const core = __importStar(__nccwpck_require__(9093));
 const io = __importStar(__nccwpck_require__(2826));
 const sys_1 = __nccwpck_require__(3156);
 const utils_1 = __nccwpck_require__(442);
 function configureEnv(dir) {
     core.info("Configuring environment");
-    dir = node_path_1.default.join(dir, "cangjie");
     switch (process.platform) {
         case "win32":
             configureWindowsEnv(dir);
