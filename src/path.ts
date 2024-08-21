@@ -1,11 +1,12 @@
 import * as process from "node:process";
 import path from "node:path";
+import * as cp from "node:child_process";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
 import { getArch } from "./sys";
 import { printCommand } from "./utils";
 
-export function configureEnv(dir: string) {
+export function configure(dir: string) {
   core.info("Configuring environment");
 
   const cjBase = path.join(dir, "cangjie");
@@ -13,13 +14,13 @@ export function configureEnv(dir: string) {
 
   switch (process.platform) {
     case "win32":
-      configureWindowsEnv(cjBase);
+      configureWindows(cjBase);
       break;
     case "linux":
-      configureLinuxEnv(cjBase);
+      configureLinux(cjBase);
       break;
     case "darwin":
-      configureMacOSEnv(cjBase);
+      configureDarwin(cjBase);
       break;
     default:
       throw new Error(`Unsupported platform: ${process.platform}`);
@@ -28,7 +29,7 @@ export function configureEnv(dir: string) {
   core.info("Environment configured");
 }
 
-function configureWindowsEnv(dir: string) {
+function configureWindows(dir: string) {
   core.addPath(`${dir}\\bin`);
   core.addPath(`${dir}\\tools\\bin`);
   core.addPath(`${dir}\\tools\\lib`);
@@ -37,7 +38,7 @@ function configureWindowsEnv(dir: string) {
   core.addPath(`${process.env.USERPROFILE}\\.cjpm\\bin`);
 }
 
-function configureLinuxEnv(dir: string) {
+function configureLinux(dir: string) {
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
@@ -54,7 +55,7 @@ function configureLinuxEnv(dir: string) {
   core.exportVariable("LD_LIBRARY_PATH", ldPath);
 }
 
-function configureMacOSEnv(dir: string) {
+function configureDarwin(dir: string) {
   core.addPath(`${dir}/bin`);
   core.addPath(`${dir}/tools/bin`);
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
@@ -69,6 +70,14 @@ function configureMacOSEnv(dir: string) {
   const ldPath = ldPaths.join(path.delimiter);
 
   core.exportVariable("DYLD_LIBRARY_PATH", ldPath);
+
+  if (!process.env.SDKROOT) {
+    const v = cp.execSync("xcrun --sdk macosx --show-sdk-path").toString();
+    core.exportVariable("SDKROOT", v.trim());
+  }
+
+  cp.execSync(`xattr -dr com.apple.quarantine ${dir}/*`);
+  cp.execSync(`codesign -s - -f --preserve-metadata=entitlements,requirements,flags,runtime ${dir}/third_party/llvm/bin/debugserver`);
 }
 
 export async function test() {
