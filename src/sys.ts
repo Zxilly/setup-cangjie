@@ -11,7 +11,7 @@ export function getArch() {
   }
 }
 
-export function getSuffix() {
+export function getSDKFileSuffix() {
   const platform = process.platform;
   switch (platform) {
     case "win32":

@@ -1,13 +1,13 @@
-name: 'Setup Cangjie'
-description: 'Setup Cangjie on GitHub Actions'
+name: Setup Cangjie
+description: Setup Cangjie on GitHub Actions
 author: Zxilly
 branding:
-  icon: 'play'
-  color: 'blue'
+  icon: play
+  color: blue
 inputs:
   token:
-    description: 'The token to access the cangjie gitcode repository'
+    description: The token to access the cangjie gitcode repository
     required: true
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: node20
+  main: dist/index.js

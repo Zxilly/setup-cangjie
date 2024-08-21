@@ -1,8 +1,9 @@
 import * as http from "@actions/http-client";
 import * as core from "@actions/core";
-import type { BlobRoot, GitLFSResponseRoot, LFSObject, TreeRoot, UserRoot } from "./interface";
-import { getSuffix, getTargetRepo } from "./sys";
-import { buildBasicAuthHeader } from "./utils";
+import * as tool from "@actions/tool-cache";
+import type { BlobRoot, GitLFSResponseRoot, TreeRoot, UserRoot } from "./interface";
+import { getSDKFileSuffix, getTargetRepo } from "./sys";
+import { buildBasicAuthHeader, mapHeader } from "./utils";
 
 const ACCESS_TOKEN_NAME = "access_token";
 
@@ -12,7 +13,14 @@ function getAuthedUrl(token: string): (url: string) => string {
   };
 }
 
-export async function getGitLFSObject(token: string): Promise<LFSObject> {
+export interface ObjectInfo {
+  name: string;
+  sha256: string;
+  size: number;
+  download: () => Promise<string>;
+}
+
+export async function getGitLFSObject(token: string): Promise<ObjectInfo> {
   const client = new http.HttpClient("setup-cangjie");
   const auther = getAuthedUrl(token);
 
@@ -34,7 +42,7 @@ export async function getGitLFSObject(token: string): Promise<LFSObject> {
   if (!repoTree) {
     throw new Error("Failed to fetch repo tree");
   }
-  const suffix = getSuffix();
+  const suffix = getSDKFileSuffix();
   const targetFile = repoTree.tree.find(file => file.name.endsWith(suffix));
   if (!targetFile) {
     throw new Error(`Failed to find target file: ${suffix}`);
@@ -59,38 +67,49 @@ export async function getGitLFSObject(token: string): Promise<LFSObject> {
   const sha256 = lines[1].split(" ")[1].substring(7);
   const size = lines[2].split(" ")[1];
 
-  core.info(`Downloading ${targetFile.name} from git lfs`);
+  core.info(`Fetching ${targetFile.name}`);
   core.info(`Sha256: ${sha256}`);
   core.info(`Size: ${size}`);
 
-  const lfsUrl = `https://gitcode.com/Cangjie/${repo}.git/info/lfs/objects/batch`;
+  return {
+    name: targetFile.name,
+    sha256,
+    size: Number.parseInt(size),
+    download: async (): Promise<string> => {
+      const lfsUrl = `https://gitcode.com/Cangjie/${repo}.git/info/lfs/objects/batch`;
 
-  core.debug(`Fetching lfs object: ${sha256}`);
-  const payload
-    = {
-      operation: "download",
-      transfers: ["basic"],
-      ref: { name: "refs/heads/main" },
-      objects: [
+      core.debug(`Fetching lfs object: ${sha256}`);
+      const payload
+        = {
+          operation: "download",
+          transfers: ["basic"],
+          ref: { name: "refs/heads/main" },
+          objects: [
+            {
+              oid: sha256,
+              size: Number.parseInt(size),
+            },
+          ],
+          hash_algo: "sha256",
+        };
+      const lfsResult = (await client.postJson<GitLFSResponseRoot>(
+        lfsUrl,
+        payload,
         {
-          oid: sha256,
-          size: Number.parseInt(size),
+          "accept": "application/vnd.git-lfs+json",
+          "content-type": "application/vnd.git-lfs+json",
+          "authorization": buildBasicAuthHeader(login, token),
         },
-      ],
-      hash_algo: "sha256",
-    };
-  const lfsResult = (await client.postJson<GitLFSResponseRoot>(
-    lfsUrl,
-    payload,
-    {
-      "accept": "application/vnd.git-lfs+json",
-      "content-type": "application/vnd.git-lfs+json",
-      "authorization": buildBasicAuthHeader(login, token),
-    },
-  )).result;
-  if (!lfsResult) {
-    throw new Error("Failed to fetch lfs result");
-  }
+      )).result;
+      if (!lfsResult) {
+        throw new Error("Failed to fetch lfs result");
+      }
 
-  return lfsResult.objects[0];
+      const o = lfsResult.objects[0];
+      const dl = o.actions.download;
+
+      core.debug(`Downloading ${o.oid} from ${dl.href}`);
+      return await tool.downloadTool(dl.href, undefined, undefined, mapHeader(dl.header));
+    },
+  };
 }

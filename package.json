@@ -1,8 +1,14 @@
 {
   "name": "setup-cangjie",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "Setup Cangjie on GitHub Actions",
+  "author": "Zxilly",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zxilly/setup-cangjie.git"
+  },
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint",
@@ -10,13 +16,8 @@
     "dev": "tsx src/index.ts",
     "build": "ncc build -m -s -o dist src/index.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Zxilly/setup-cangjie.git"
-  },
-  "author": "Zxilly",
-  "license": "MIT",
   "devDependencies": {
+    "@actions/cache": "^3.2.4",
     "@actions/core": "^1.10.1",
     "@actions/http-client": "^2.2.2",
     "@actions/io": "^1.1.3",
