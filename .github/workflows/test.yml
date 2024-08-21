@@ -22,5 +22,10 @@ jobs:
           token: ${{ secrets.GITCODE_TOKEN }}
 
       - name: Verify setup
+        shell: bash
         run: |
           cjc --version
+          mkdir cjbuild
+          cd cjbuild
+          cjpm init
+          cjpm run

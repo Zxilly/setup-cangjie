@@ -1,4 +1,3 @@
-import path from "node:path";
 import * as core from "@actions/core";
 import { getGitLFSObject } from "./gitcode";
 import { useCacheOrDownload } from "./download";
@@ -16,15 +15,8 @@ export async function action() {
 
     const dir = await useCacheOrDownload(object);
 
-    const setenv = core.getInput("setenv");
-
-    const cjBase = path.join(dir, "cangjie");
-
-    core.exportVariable("CANGJIE_HOME", cjBase);
-    if (setenv === "true") {
-      configureEnv(dir);
-      await test();
-    }
+    configureEnv(dir);
+    await test();
   }
   catch (error: any) {
     core.setFailed(error.toString());

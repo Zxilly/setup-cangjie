@@ -8,7 +8,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "dev": "tsx src/index.ts",
-    "build": "ncc build -s -o dist src/index.ts"
+    "build": "ncc build -m -s -o dist src/index.ts"
   },
   "repository": {
     "type": "git",
