@@ -3,7 +3,7 @@ import path from "node:path";
 import * as cp from "node:child_process";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
-import { getArch } from "./sys";
+import { getLLVMNameArch } from "./sys";
 import { printCommand } from "./utils";
 
 export function configure(dir: string) {
@@ -29,22 +29,26 @@ export function configure(dir: string) {
   core.info("Environment configured");
 }
 
+function ap(...args: string[]) {
+  core.addPath(path.join(...args));
+}
+
 function configureWindows(dir: string) {
-  core.addPath(`${dir}\\bin`);
-  core.addPath(`${dir}\\tools\\bin`);
-  core.addPath(`${dir}\\tools\\lib`);
-  core.addPath(`${dir}\\runtime\\lib\\windows_x86_64_llvm`);
-  core.addPath(`${dir}\\third_party\\llvm\\lldb\\lib`);
-  core.addPath(`${process.env.USERPROFILE}\\.cjpm\\bin`);
+  ap(dir, "bin");
+  ap(dir, "tools", "bin");
+  ap(dir, "tools", "lib");
+  ap(dir, "runtime", "lib", "windows_x86_64_llvm");
+  ap(dir, "third_party", "llvm", "lldb", "lib");
+  ap(process.env.USERPROFILE!, ".cjpm", "bin");
 }
 
 function configureLinux(dir: string) {
-  core.addPath(`${dir}/bin`);
-  core.addPath(`${dir}/tools/bin`);
-  core.addPath(`${process.env.HOME}/.cjpm/bin`);
+  ap(dir, "bin");
+  ap(dir, "tools", "bin");
+  ap(process.env.HOME!, ".cjpm", "bin");
 
   const ldPaths = [
-    `${dir}/runtime/lib/linux_${getArch()}_llvm`,
+    `${dir}/runtime/lib/linux_${getLLVMNameArch()}_llvm`,
     `${dir}/tools/lib`,
   ];
   if (process.env.LD_LIBRARY_PATH) {
@@ -61,7 +65,7 @@ function configureDarwin(dir: string) {
   core.addPath(`${process.env.HOME}/.cjpm/bin`);
 
   const ldPaths = [
-    `${dir}/runtime/lib/darwin_${getArch()}_llvm`,
+    `${dir}/runtime/lib/darwin_${getLLVMNameArch()}_llvm`,
     `${dir}/tools/lib`,
   ];
   if (process.env.DYLD_LIBRARY_PATH) {

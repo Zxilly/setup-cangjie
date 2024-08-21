@@ -3,7 +3,7 @@ import path from "node:path";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
 import * as cache from "@actions/cache";
-import { getArch } from "./sys";
+import { getArchiveNameArch } from "./sys";
 import type { ObjectInfo } from "./gitcode";
 
 const toolName = "cangjie";
@@ -16,7 +16,7 @@ async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
   core.debug(`Extracted to ${extractedPath}`);
 
   core.debug(`Caching ${extractedPath}`);
-  const cacheDir = await tool.cacheDir(extractedPath, toolName, ver, getArch());
+  const cacheDir = await tool.cacheDir(extractedPath, toolName, ver, getArchiveNameArch());
   core.debug(`Cached to ${cacheDir}`);
 
   return cacheDir;
@@ -25,13 +25,13 @@ async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
 export async function useCacheOrDownload(obj: ObjectInfo): Promise<string> {
   const version = obj.sha256;
 
-  const oldCacheDir = tool.find(toolName, version, getArch());
+  const oldCacheDir = tool.find(toolName, version, getArchiveNameArch());
   if (oldCacheDir) {
     // tool version found in cache
     return oldCacheDir;
   }
 
-  const cacheKey = `cangjie-sdk-${obj.sha256}-${process.platform}-${getArch()}`;
+  const cacheKey = `cangjie-sdk-${obj.sha256}-${process.platform}-${getArchiveNameArch()}`;
 
   const installTarget = getToolDir(version);
 
@@ -71,6 +71,6 @@ function getToolDir(ver: string): string {
     base,
     toolName,
     ver,
-    getArch(),
+    getArchiveNameArch(),
   );
 }

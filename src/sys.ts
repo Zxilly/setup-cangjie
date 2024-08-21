@@ -1,11 +1,22 @@
 import * as process from "node:process";
 
-export function getArch() {
+export function getArchiveNameArch() {
   switch (process.arch) {
     case "arm64":
       return "aarch64";
     case "x64":
       return "x64";
+    default:
+      throw new Error(`Unsupported architecture: ${process.arch}`);
+  }
+}
+
+export function getLLVMNameArch() {
+  switch (process.arch) {
+    case "arm64":
+      return "aarch64";
+    case "x64":
+      return "x86_64";
     default:
       throw new Error(`Unsupported architecture: ${process.arch}`);
   }
@@ -18,7 +29,7 @@ export function getSDKFileSuffix() {
       return "windows_x64.zip";
     case "linux":
     case "darwin": {
-      return `${platform}_${getArch()}.tar.gz`;
+      return `${platform}_${getArchiveNameArch()}.tar.gz`;
     }
     default:
       throw new Error(`Unsupported platform: ${platform}`);
