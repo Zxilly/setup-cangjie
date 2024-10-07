@@ -12,8 +12,8 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4
       '@actions/core':
-        specifier: ^1.10.1
-        version: 1.10.1
+        specifier: ^1.11.1
+        version: 1.11.1
       '@actions/http-client':
         specifier: ^2.2.3
         version: 2.2.3
@@ -50,8 +50,8 @@ packages:
   '@actions/cache@3.2.4':
     resolution: {integrity: sha512-RuHnwfcDagtX+37s0ZWy7clbOfnZ7AlDJQ7k/9rzt2W4Gnwde3fa/qjSjVuz4vLcLIpc7fUob27CMrqiWZytYA==}
 
-  '@actions/core@1.10.1':
-    resolution: {integrity: sha512-3lBR9EDAY+iYIpTnTIXmWcNbX3T2kCkAEQGIQx4NVQ0575nk2k3GRZDTPQG+vVtS2izSLmINlxXf0uLtnrTP+g==}
+  '@actions/core@1.11.1':
+    resolution: {integrity: sha512-hXJCSrkwfA46Vd9Z3q4cpEpHB1rL5NG04+/rbqW9d3+CSvtB1tYe8UTpAlixa1vj0m/ULglfEK2UKxMGxCxv5A==}
 
   '@actions/exec@1.1.1':
     resolution: {integrity: sha512-+sCcHHbVdk93a0XT19ECtO/gIXoxvdsgQLzb2fE2/5sIZmWQuluYyjPQtrtTHdU1YzTZ7bAPN4sITq2xi1679w==}
@@ -1832,7 +1832,7 @@ snapshots:
 
   '@actions/cache@3.2.4':
     dependencies:
-      '@actions/core': 1.10.1
+      '@actions/core': 1.11.1
       '@actions/exec': 1.1.1
       '@actions/glob': 0.1.2
       '@actions/http-client': 2.2.3
@@ -1846,10 +1846,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@actions/core@1.10.1':
+  '@actions/core@1.11.1':
     dependencies:
+      '@actions/exec': 1.1.1
       '@actions/http-client': 2.2.3
-      uuid: 8.3.2
 
   '@actions/exec@1.1.1':
     dependencies:
@@ -1857,7 +1857,7 @@ snapshots:
 
   '@actions/glob@0.1.2':
     dependencies:
-      '@actions/core': 1.10.1
+      '@actions/core': 1.11.1
       minimatch: 3.1.2
 
   '@actions/http-client@2.2.3':
@@ -1869,7 +1869,7 @@ snapshots:
 
   '@actions/tool-cache@2.0.1':
     dependencies:
-      '@actions/core': 1.10.1
+      '@actions/core': 1.11.1
       '@actions/exec': 1.1.1
       '@actions/http-client': 2.2.3
       '@actions/io': 1.1.3
