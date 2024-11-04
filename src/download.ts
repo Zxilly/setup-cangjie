@@ -23,7 +23,7 @@ async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
 }
 
 export async function useCacheOrDownload(obj: ObjectInfo): Promise<string> {
-  const version = obj.sha256;
+  const version = obj.version ?? obj.sha256;
 
   const oldCacheDir = tool.find(toolName, version, getArchiveNameArch());
   if (oldCacheDir) {

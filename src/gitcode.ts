@@ -18,6 +18,7 @@ export interface ObjectInfo {
   sha256: string;
   size: number;
   download: () => Promise<string>;
+  version?: string;
 }
 
 export async function getGitLFSObject(token: string): Promise<ObjectInfo> {
@@ -56,6 +57,12 @@ export async function getGitLFSObject(token: string): Promise<ObjectInfo> {
     throw new Error("Failed to fetch blob");
   }
 
+  let version: string | undefined;
+  const matcher = targetFile.name.match(/\d+\.\d+\.\d+/);
+  if (matcher) {
+    version = matcher[0];
+  }
+
   const content = atob(blob.content);
 
   const lines = content.split("\n");
@@ -74,6 +81,7 @@ export async function getGitLFSObject(token: string): Promise<ObjectInfo> {
   return {
     name: targetFile.name,
     sha256,
+    version,
     size: Number.parseInt(size),
     download: async (): Promise<string> => {
       const lfsUrl = `https://gitcode.com/Cangjie/${repo}.git/info/lfs/objects/batch`;
