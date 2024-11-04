@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
-import { getGitLFSObject } from "./gitcode";
 import { useCacheOrDownload } from "./download";
+import { getGitLFSObject } from "./gitcode";
 import { configure, test } from "./path";
 
 export async function action() {

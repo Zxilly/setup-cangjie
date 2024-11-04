@@ -1,6 +1,6 @@
-import * as process from "node:process";
-import path from "node:path";
 import * as cp from "node:child_process";
+import path from "node:path";
+import * as process from "node:process";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
 import { getLLVMNameArch } from "./sys";

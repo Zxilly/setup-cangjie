@@ -1,7 +1,7 @@
-import * as http from "@actions/http-client";
-import * as core from "@actions/core";
-import * as tool from "@actions/tool-cache";
 import type { BlobRoot, GitLFSResponseRoot, TreeRoot, UserRoot } from "./interface";
+import * as core from "@actions/core";
+import * as http from "@actions/http-client";
+import * as tool from "@actions/tool-cache";
 import { getSDKFileSuffix, getTargetRepo } from "./sys";
 import { buildBasicAuthHeader, mapHeader } from "./utils";
 

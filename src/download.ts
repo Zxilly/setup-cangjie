@@ -1,10 +1,10 @@
-import * as process from "node:process";
+import type { ObjectInfo } from "./gitcode";
 import path from "node:path";
+import * as process from "node:process";
+import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
-import * as cache from "@actions/cache";
 import { getArchiveNameArch } from "./sys";
-import type { ObjectInfo } from "./gitcode";
 
 const toolName = "cangjie";
 
