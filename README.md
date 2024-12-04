@@ -7,10 +7,11 @@
 
 ## 使用方法
 
-仓颉尚未广泛可用，因此需要提供一个令牌以下载。
+支持安装 STS 和 Canary 版本，在安装 Canary 版本时，需要提供具有 GitCode Cangjie 组织访问权限的 Token。
 
 ```yaml
 - uses: Zxilly/setup-cangjie@v1
   with:
+    channel: 'canary' # 'canary' or 'sts'
     token: ${{ secrets.GITCODE_TOKEN }}
 ```
