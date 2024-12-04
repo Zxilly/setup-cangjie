@@ -14,7 +14,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "dev": "tsx src/index.ts",
-    "build": "ncc build -m -s -o dist src/index.ts"
+    "build": "ncc build -m -e debug -o dist src/index.ts"
   },
   "devDependencies": {
     "@actions/cache": "^3.3.0",
