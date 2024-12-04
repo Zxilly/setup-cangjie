@@ -14,12 +14,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-13, macos-14, windows-latest, ubuntu-latest]
+        channel: [canary, sts]
     steps:
       - uses: actions/checkout@v4
 
       - name: Test on ${{ matrix.os }}
         uses: ./
         with:
+          channel: ${{ matrix.channel }}
           token: ${{ secrets.GITCODE_TOKEN }}
 
       - name: Verify setup

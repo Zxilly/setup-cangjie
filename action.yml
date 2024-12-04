@@ -5,9 +5,13 @@ branding:
   icon: play
   color: blue
 inputs:
+  channel:
+    description: The channel to install cangjie. [canary, sts]
+    required: false
+    default: canary
   token:
-    description: The token to access the cangjie gitcode repository
-    required: true
+    description: The token to access the cangjie gitcode repository, necessary for canary channel
+    required: false
 runs:
   using: node20
   main: dist/index.js
