@@ -30,7 +30,7 @@
     "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.10.5",
     "eslint": "^9.17.0",
-    "rollup": "^4.30.0",
+    "rollup": "^4.30.1",
     "rollup-plugin-visualizer": "^5.13.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
