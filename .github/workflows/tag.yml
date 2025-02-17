@@ -1,0 +1,47 @@
+name: Sync Version Tags
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+jobs:
+  sync-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Target Tag
+        id: determine-tag
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            FULL_TAG=${GITHUB_REF#refs/tags/}
+          else
+            git fetch --tags
+            FULL_TAG=$(git tag --list 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+          fi
+
+          if [[ ! "$FULL_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::无效的语义化标签格式: $FULL_TAG"
+            exit 1
+          fi
+
+          MAJOR_VERSION=$(echo "$FULL_TAG" | sed -E 's/(v[0-9]+)\..*/\1/')
+          
+          echo "full_tag=$FULL_TAG" >> $GITHUB_OUTPUT
+          echo "major_version=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Version Tag
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+          echo "更新标签: ${{ steps.determine-tag.outputs.major_version}} → ${{ steps.determine-tag.outputs.full_tag }}"
+
+          # 强制更新标签
+          git tag -f ${{ steps.determine-tag.outputs.major_version}} ${{ steps.determine-tag.outputs.full_tag }}^0
+          git push -f origin ${{ steps.determine-tag.outputs.major_version}}
