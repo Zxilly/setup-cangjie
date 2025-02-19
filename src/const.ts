@@ -49,5 +49,9 @@ const STS_DOWNLOADS: Record<string, ObjectInfo> = {
 };
 
 export function getSTSObjectInfo() {
-  return STS_DOWNLOADS[`${process.platform}-${process.arch}`];
+  const info = STS_DOWNLOADS[`${process.platform}-${process.arch}`];
+  if (!info) {
+    throw new Error(`Unsupported platform: ${process.platform}-${process.arch}`);
+  }
+  return info;
 }
