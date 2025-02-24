@@ -29,7 +29,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/node22": "^22.0.0",
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.13.5",
     "eslint": "^9.20.1",
     "rollup": "^4.34.8",
     "rollup-plugin-visualizer": "^5.14.0",
