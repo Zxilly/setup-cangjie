@@ -1,6 +1,6 @@
 {
   "name": "setup-cangjie",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "private": true,
   "description": "Setup Cangjie on GitHub Actions",
   "author": "Zxilly",
@@ -28,13 +28,18 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/node20": "^20.0.0",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
     "rollup": "^4.35.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   },
-  "packageManager": "pnpm@10.4.0+sha512.6b849d0787d97f8f4e1f03a9b8ff8f038e79e153d6f11ae539ae7c435ff9e796df6a862c991502695c7f9e8fac8aeafc1ac5a8dab47e36148d183832d886dd52"
+  "packageManager": "pnpm@10.6.2",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }
