@@ -4,5 +4,6 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "node",
+    "resolveJsonModule": true
   }
 }

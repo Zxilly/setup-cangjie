@@ -97,3 +97,25 @@ export interface Download {
   expires_at: string;
   expires_in: number;
 }
+
+export interface Tag {
+  name: string;
+  message: string;
+  commit: Commit;
+  tagger: Tagger;
+}
+
+export interface Commit {
+  sha: string;
+  date: string;
+}
+
+export interface Tagger {
+  name: string;
+  email: string;
+  date: string;
+}
+
+
+export type TagRoot = Tag[];
+

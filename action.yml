@@ -1,16 +1,20 @@
 name: Setup Cangjie
-description: Setup Cangjie on GitHub Actions
+description: 在 GitHub Actions 中安装仓颉
 author: Zxilly
 branding:
   icon: play
   color: blue
 inputs:
   channel:
-    description: The channel to install cangjie. [canary, sts]
+    description: 需要安装的仓颉版本通道，例如 canary, sts
     required: false
     default: canary
+  version:
+    description: 需要安装的仓颉版本，例如 0.53.13, 0.58.3，使用 main 表示最新版
+    required: false
+    default: main
   token:
-    description: The token to access the cangjie gitcode repository, necessary for canary channel
+    description: 访问仓颉 gitcode 仓库的 token，使用 canary 通道时必须提供
     required: false
 runs:
   using: node20

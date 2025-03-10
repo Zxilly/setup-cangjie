@@ -18,13 +18,18 @@ export async function action() {
     return;
   }
 
+  let version = core.getInput("version");
+  if (!version) {
+    version = "latest";
+  }
+
   try {
     let object: ObjectInfo;
     if (channel === "sts") {
-      object = getSTSObjectInfo();
+      object = getSTSObjectInfo(version);
     }
     else {
-      object = await getGitLFSObject(token);
+      object = await getGitLFSObject(token, version);
     }
 
     const dir = await useCacheOrDownload(object);

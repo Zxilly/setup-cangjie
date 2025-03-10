@@ -15,6 +15,15 @@ jobs:
       matrix:
         os: [macos-13, macos-14, windows-latest, ubuntu-latest, ubuntu-24.04-arm]
         channel: [canary, sts]
+        include:
+          - channel: canary
+            version: 0.58.3
+          - channel: canary
+            version: latest
+          - channel: sts
+            version: 0.53.13
+          - channel: sts
+            version: latest
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +32,7 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
           token: ${{ secrets.GITCODE_TOKEN }}
-
+          version: ${{ matrix.version }}
       - name: Verify setup
         shell: bash
         run: |
