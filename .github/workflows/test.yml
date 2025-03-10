@@ -14,8 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-13, macos-14, windows-latest, ubuntu-latest, ubuntu-24.04-arm]
-        channel: [canary, sts]
-        include:
+        target:
           - channel: canary
             version: 0.58.3
           - channel: canary
@@ -30,9 +29,9 @@ jobs:
       - name: Test on ${{ matrix.os }}
         uses: ./
         with:
-          channel: ${{ matrix.channel }}
+          channel: ${{ matrix.target.channel }}
           token: ${{ secrets.GITCODE_TOKEN }}
-          version: ${{ matrix.version }}
+          version: ${{ matrix.target.version }}
       - name: Verify setup
         shell: bash
         run: |
