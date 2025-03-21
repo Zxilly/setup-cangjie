@@ -16,6 +16,10 @@ inputs:
   token:
     description: 访问仓颉 gitcode 仓库的 token，使用 canary 通道时必须提供
     required: false
+  tool-cache:
+    description: 是否缓存仓颉 SDK
+    required: false
+    default: true
 runs:
   using: node20
   main: dist/index.js

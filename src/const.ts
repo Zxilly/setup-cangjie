@@ -89,7 +89,7 @@ const STS_0_53_18: Record<string, ObjectInfo> = {
 const STS_DOWNLOADS: Record<string, Record<string, ObjectInfo>> = {
   "0.53.13": STS_0_53_13,
   "0.53.18": STS_0_53_18,
-}
+};
 
 export function getSTSObjectInfo(version: string) {
   if (version === "latest") {

@@ -3,7 +3,7 @@ name: Sync Version Tags
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
           fi
 
           MAJOR_VERSION=$(echo "$FULL_TAG" | sed -E 's/(v[0-9]+)\..*/\1/')
-          
+
           echo "full_tag=$FULL_TAG" >> $GITHUB_OUTPUT
           echo "major_version=$MAJOR_VERSION" >> $GITHUB_OUTPUT
 

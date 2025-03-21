@@ -17,8 +17,8 @@ export interface ObjectInfo {
 export async function getGitLFSObject(token: string, version: string): Promise<ObjectInfo> {
   const client = new http.HttpClient(`setup-cangjie/${pkgVersion}`, [], {
     headers: {
-      "authorization": `Bearer ${token}`,
-    }
+      authorization: `Bearer ${token}`,
+    },
   });
 
   // https://api.gitcode.com/api/v5/user
@@ -48,7 +48,8 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
     if (tag) {
       core.info(`Found tag: ${tag.name}`);
       shaOrBranch = tag.commit.sha;
-    } else {
+    }
+    else {
       core.info(`Tag ${version} not found, try to find latest version`);
       shouldCheckVersion = true;
     }
@@ -68,17 +69,18 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
     throw new Error(`Failed to find target file: ${suffix}`);
   }
 
-
   if (shouldCheckVersion) {
     const matcher = targetFile.name.match(/\d+\.\d+\.\d+/);
     if (matcher) {
-      let foundVersion = matcher[0];
+      const foundVersion = matcher[0];
       if (version === foundVersion) {
         core.info(`Found version: ${foundVersion} at main branch`);
-      } else {
+      }
+      else {
         throw new Error(`Found version: ${foundVersion} at main branch, but expected version: ${version}`);
       }
-    } else {
+    }
+    else {
       throw new Error(`Failed to find sdk version: ${targetFile.name}`);
     }
   }
@@ -117,17 +119,17 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
       core.debug(`Fetching lfs object: ${sha256}`);
       const payload
         = {
-        operation: "download",
-        transfers: ["basic"],
-        ref: { name: "refs/heads/main" },
-        objects: [
-          {
-            oid: sha256,
-            size: Number.parseInt(size),
-          },
-        ],
-        hash_algo: "sha256",
-      };
+          operation: "download",
+          transfers: ["basic"],
+          ref: { name: "refs/heads/main" },
+          objects: [
+            {
+              oid: sha256,
+              size: Number.parseInt(size),
+            },
+          ],
+          hash_algo: "sha256",
+        };
       const lfsResult = (await client.postJson<GitLFSResponseRoot>(
         lfsUrl,
         payload,

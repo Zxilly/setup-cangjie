@@ -23,6 +23,8 @@ export async function action() {
     version = "latest";
   }
 
+  const toolCache = core.getBooleanInput("tool-cache");
+
   try {
     let object: ObjectInfo;
     if (channel === "sts") {
@@ -32,7 +34,7 @@ export async function action() {
       object = await getGitLFSObject(token, version);
     }
 
-    const dir = await useCacheOrDownload(object);
+    const dir = await useCacheOrDownload(object, toolCache);
 
     configure(dir);
     await test();

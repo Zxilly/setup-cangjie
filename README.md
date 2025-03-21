@@ -12,7 +12,8 @@
 ```yaml
 - uses: Zxilly/setup-cangjie@v1
   with:
-    channel: 'canary' # 'canary' 或者 'sts'
-    version: '0.58.3' # 需要安装的仓颉版本，例如 0.53.13, 0.58.3，使用 latest 表示最新版
+    channel: canary # 'canary' 或者 'sts'
+    version: 0.58.3 # 需要安装的仓颉版本，例如 0.53.13, 0.58.3，使用 latest 表示最新版
     token: ${{ secrets.GITCODE_TOKEN }} # 访问仓颉 gitcode 仓库的 token，使用 canary 通道时必须提供
+    tool-cache: true # 把编译 SDK 保存到 GitHub Actions 缓存中
 ```

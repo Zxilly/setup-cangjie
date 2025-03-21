@@ -116,6 +116,4 @@ export interface Tagger {
   date: string;
 }
 
-
 export type TagRoot = Tag[];
-

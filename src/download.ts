@@ -22,7 +22,7 @@ async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
   return cacheDir;
 }
 
-export async function useCacheOrDownload(obj: ObjectInfo): Promise<string> {
+export async function useCacheOrDownload(obj: ObjectInfo, useToolCache: boolean): Promise<string> {
   const version = obj.version ?? obj.sha256;
 
   const oldCacheDir = tool.find(toolName, version, getArchiveNameArch());
@@ -43,7 +43,7 @@ export async function useCacheOrDownload(obj: ObjectInfo): Promise<string> {
     }
   }
 
-  if (!cache.isFeatureAvailable()) {
+  if (!cache.isFeatureAvailable() || !useToolCache) {
     await downloadAndExtract();
   }
   else {
