@@ -22,20 +22,6 @@ export function getLLVMNameArch() {
   }
 }
 
-export function getSDKFileSuffix() {
-  const platform = process.platform;
-  switch (platform) {
-    case "win32":
-      return "windows_x64.zip";
-    case "linux":
-    case "darwin": {
-      return `${platform}_${getArchiveNameArch()}.tar.gz`;
-    }
-    default:
-      throw new Error(`Unsupported platform: ${platform}`);
-  }
-}
-
 export function getTargetRepo() {
   switch (process.platform) {
     case "win32":

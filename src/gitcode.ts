@@ -3,7 +3,7 @@ import * as core from "@actions/core";
 import * as http from "@actions/http-client";
 import * as tool from "@actions/tool-cache";
 import { version as pkgVersion } from "../package.json";
-import { getSDKFileSuffix, getTargetRepo } from "./sys";
+import { getArchiveNameArch, getTargetRepo } from "./sys";
 import { buildBasicAuthHeader, mapHeader } from "./utils";
 
 export interface ObjectInfo {
@@ -63,10 +63,11 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
   if (!repoTree) {
     throw new Error("Failed to fetch repo tree");
   }
-  const suffix = getSDKFileSuffix();
-  const targetFile = repoTree.tree.find(file => file.name.endsWith(suffix));
+
+  const archName = getArchiveNameArch();
+  const targetFile = repoTree.tree.find(file => file.name.includes(archName));
   if (!targetFile) {
-    throw new Error(`Failed to find target file: ${suffix}`);
+    throw new Error(`Failed to find target file: ${archName}, known files: ${repoTree.tree.map(file => file.name).join(", ")}`);
   }
 
   if (shouldCheckVersion) {

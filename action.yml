@@ -8,18 +8,18 @@ inputs:
   channel:
     description: 需要安装的仓颉版本通道，例如 canary, sts
     required: false
-    default: canary
+    default: "canary"
   version:
     description: 需要安装的仓颉版本，例如 0.53.13, 0.58.3，使用 main 表示最新版
     required: false
-    default: main
+    default: "main"
   token:
     description: 访问仓颉 gitcode 仓库的 token，使用 canary 通道时必须提供
     required: false
   tool-cache:
     description: 是否缓存仓颉 SDK
     required: false
-    default: true
+    default: "true"
 runs:
   using: node20
   main: dist/index.js
