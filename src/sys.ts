@@ -11,6 +11,13 @@ export function getArchiveNameArch() {
   }
 }
 
+export function getArchiveSuffix() {
+  if (process.platform === "win32") {
+    return ".zip";
+  }
+  return ".tar.gz";
+}
+
 export function getLLVMNameArch() {
   switch (process.arch) {
     case "arm64":
@@ -30,5 +37,7 @@ export function getTargetRepo() {
       return "CangjieSDK-Linux-Beta";
     case "darwin":
       return "CangjieSDK-Darwin";
+    default:
+      throw new Error(`Unsupported platform: ${process.platform}`);
   }
 }

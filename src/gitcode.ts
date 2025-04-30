@@ -3,7 +3,7 @@ import * as core from "@actions/core";
 import * as http from "@actions/http-client";
 import * as tool from "@actions/tool-cache";
 import { version as pkgVersion } from "../package.json";
-import { getArchiveNameArch, getTargetRepo } from "./sys";
+import { getArchiveNameArch, getArchiveSuffix, getTargetRepo } from "./sys";
 import { buildBasicAuthHeader, mapHeader } from "./utils";
 
 export interface ObjectInfo {
@@ -65,9 +65,10 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
   }
 
   const archName = getArchiveNameArch();
-  const targetFile = repoTree.tree.find(file => file.name.includes(archName));
+  const ext = getArchiveSuffix();
+  const targetFile = repoTree.tree.find(file => file.name.includes(archName) && file.name.endsWith(ext));
   if (!targetFile) {
-    throw new Error(`Failed to find target file: ${archName}, known files: ${repoTree.tree.map(file => file.name).join(", ")}`);
+    throw new Error(`Failed to find target file: ${archName} ${ext}, known files: ${repoTree.tree.map(file => file.name).join(", ")}`);
   }
 
   if (shouldCheckVersion) {
