@@ -4,6 +4,7 @@ import { getSTSObjectInfo } from "./const";
 import { useCacheOrDownload } from "./download";
 import { getGitLFSObject } from "./gitcode";
 import { configure, test } from "./path";
+import { detectCangjieVersion } from "./utils";
 
 export async function action() {
   const channel = core.getInput("channel");
@@ -21,6 +22,9 @@ export async function action() {
   let version = core.getInput("version");
   if (!version) {
     version = "latest";
+  }
+  if (version === "auto") {
+    version = await detectCangjieVersion();
   }
 
   const toolCache = core.getBooleanInput("tool-cache");
