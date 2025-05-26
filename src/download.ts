@@ -37,8 +37,10 @@ export async function useCacheOrDownload(obj: ObjectInfo, useToolCache: boolean,
     return oldCacheDir;
   }
 
-  const cacheKey = `cangjie-sdk-${obj.sha256}-${process.platform}-${getArchiveNameArch()}`;
-  const cacheArchiveKey = `cangjie-sdk-${version}-${process.platform}-${getArchiveNameArch()}-archive`;
+  const verName = [obj.version, obj.sha256].filter(Boolean).join("-");
+
+  const cacheKey = `cangjie-sdk-${verName}-${process.platform}-${getArchiveNameArch()}`;
+  const cacheArchiveKey = `cangjie-sdk-${verName}-${process.platform}-${getArchiveNameArch()}-archive`;
 
   const installTarget = getToolDir(version);
 
