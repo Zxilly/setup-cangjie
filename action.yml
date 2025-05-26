@@ -20,6 +20,12 @@ inputs:
     description: 是否缓存仓颉 SDK
     required: false
     default: "true"
+  archive-path:
+    description: 下载的 .zip/.tar.gz 文件的存储路径
+    required: false
+outputs:
+  version:
+    description: 安装的仓颉版本
 runs:
   using: node20
   main: dist/index.js

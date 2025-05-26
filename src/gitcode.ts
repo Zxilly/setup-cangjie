@@ -10,7 +10,7 @@ export interface ObjectInfo {
   name: string;
   sha256: string;
   size: number;
-  download: () => Promise<string>;
+  download: (dest: string) => Promise<string>;
   version?: string;
 }
 
@@ -115,7 +115,7 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
     sha256,
     version,
     size: Number.parseInt(size),
-    download: async (): Promise<string> => {
+    download: async (dest): Promise<string> => {
       const lfsUrl = `https://gitcode.com/Cangjie/${repo}.git/info/lfs/objects/batch`;
 
       core.debug(`Fetching lfs object: ${sha256}`);
@@ -149,7 +149,7 @@ export async function getGitLFSObject(token: string, version: string): Promise<O
       const dl = o.actions.download;
 
       core.debug(`Downloading ${o.oid} from ${dl.href}`);
-      return await tool.downloadTool(dl.href, undefined, undefined, mapHeader(dl.header));
+      return await tool.downloadTool(dl.href, dest, undefined, mapHeader(dl.header));
     },
   };
 }

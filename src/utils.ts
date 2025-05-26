@@ -2,6 +2,8 @@ import type { TomlPrimitive } from "smol-toml";
 import { Buffer } from "node:buffer";
 import * as cp from "node:child_process";
 import { readFile } from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
 import * as core from "@actions/core";
 import * as glob from "@actions/glob";
 import { parse } from "smol-toml";
@@ -47,4 +49,13 @@ export async function detectCangjieVersion(): Promise<string> {
 
   core.warning("No version detected, defaulting to latest");
   return "latest";
+}
+
+export function getRandomPath(): string {
+  const tempDirectory = process.env.RUNNER_TEMP;
+  if (!tempDirectory) {
+    throw new Error("RUNNER_TEMP environment variable is not set");
+  }
+
+  return path.join(tempDirectory, crypto.randomUUID());
 }

@@ -4,7 +4,7 @@ import { getSTSObjectInfo } from "./const";
 import { useCacheOrDownload } from "./download";
 import { getGitLFSObject } from "./gitcode";
 import { configure, test } from "./path";
-import { detectCangjieVersion } from "./utils";
+import { detectCangjieVersion, getRandomPath } from "./utils";
 
 export async function action() {
   const channel = core.getInput("channel");
@@ -28,6 +28,7 @@ export async function action() {
   }
 
   const toolCache = core.getBooleanInput("tool-cache");
+  const archivePath = core.getInput("archive-path");
 
   try {
     let object: ObjectInfo;
@@ -38,7 +39,7 @@ export async function action() {
       object = await getGitLFSObject(token, version);
     }
 
-    const dir = await useCacheOrDownload(object, toolCache);
+    const dir = await useCacheOrDownload(object, toolCache, archivePath);
 
     configure(dir);
     await test();

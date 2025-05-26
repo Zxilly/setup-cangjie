@@ -23,6 +23,7 @@ jobs:
             version: 0.53.13
           - channel: sts
             version: latest
+        archive-path: ["", "archive.bin"]
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +33,8 @@ jobs:
           channel: ${{ matrix.target.channel }}
           token: ${{ secrets.GITCODE_TOKEN }}
           version: ${{ matrix.target.version }}
+          tool-cache: true
+          archive-path: ${{ matrix.archive-path }}
       - name: Verify setup
         shell: bash
         run: |

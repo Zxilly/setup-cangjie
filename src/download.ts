@@ -5,10 +5,11 @@ import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
 import { getArchiveNameArch } from "./sys";
+import { getRandomPath } from "./utils";
 
 const toolName = "cangjie";
 
-async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
+async function extractAndMovetoCache(p: string, ver: string, dest: string): Promise<string> {
   const extractor = process.platform === "win32" ? tool.extractZip : tool.extractTar;
 
   core.debug(`Extracting ${p}`);
@@ -22,43 +23,71 @@ async function extractAndMovetoCache(p: string, ver: string): Promise<string> {
   return cacheDir;
 }
 
-export async function useCacheOrDownload(obj: ObjectInfo, useToolCache: boolean): Promise<string> {
+export async function useCacheOrDownload(obj: ObjectInfo, useToolCache: boolean, archivePath: string): Promise<string> {
   const version = obj.version ?? obj.sha256;
 
+  const canSkipArchiveDownload = archivePath === "";
+  if (canSkipArchiveDownload) {
+    archivePath = getRandomPath();
+  }
+
   const oldCacheDir = tool.find(toolName, version, getArchiveNameArch());
-  if (oldCacheDir) {
+  if (oldCacheDir && !canSkipArchiveDownload) {
     // tool version found in cache
     return oldCacheDir;
   }
 
   const cacheKey = `cangjie-sdk-${obj.sha256}-${process.platform}-${getArchiveNameArch()}`;
+  const cacheArchiveKey = `cangjie-sdk-${version}-${process.platform}-${getArchiveNameArch()}-archive`;
 
   const installTarget = getToolDir(version);
 
-  async function downloadAndExtract() {
-    const archivePath = await obj.download();
-    const realInstall = await extractAndMovetoCache(archivePath, version);
-    if (realInstall !== installTarget) {
-      throw new Error(`Unexpected install target: ${realInstall}`);
+  async function downloadArchive(useCache: boolean): Promise<void> {
+    if (useCache) {
+      const oldArchiveFound = await cache.restoreCache(
+        [archivePath],
+        cacheArchiveKey,
+      );
+      if (oldArchiveFound) {
+        core.info(`Cache hit for archive: ${cacheArchiveKey}`);
+        return;
+      }
+    }
+
+    await obj.download(archivePath);
+
+    if (useCache) {
+      await cache.saveCache([archivePath], cacheArchiveKey);
     }
   }
 
   if (!cache.isFeatureAvailable() || !useToolCache) {
-    await downloadAndExtract();
+    await downloadArchive(false);
+    await extractAndMovetoCache(archivePath, version, installTarget);
+    return installTarget;
+  }
+  if (!canSkipArchiveDownload) {
+    await downloadArchive(true);
+  }
+
+  const oldKey = await cache.restoreCache([
+    installTarget,
+  ], cacheKey);
+
+  if (!oldKey) {
+    if (canSkipArchiveDownload) {
+      await downloadArchive(true);
+    }
+
+    await extractAndMovetoCache(archivePath, version, installTarget);
+
+    const cacheId = await cache.saveCache([installTarget], cacheKey);
+    core.info(`Cache saved: ${cacheKey} with ID ${cacheId}`);
   }
   else {
-    const oldKey = await cache.restoreCache([
-      installTarget,
-    ], cacheKey);
-    if (!oldKey) {
-      await downloadAndExtract();
-      const cacheId = await cache.saveCache([installTarget], cacheKey);
-      core.info(`Cache saved: ${cacheKey} with ID ${cacheId}`);
-    }
-    else {
-      core.info(`Cache hit: ${oldKey}`);
-    }
+    core.info(`Cache hit: ${oldKey}`);
   }
+
   return installTarget;
 }
 
