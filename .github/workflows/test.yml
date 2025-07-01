@@ -23,6 +23,10 @@ jobs:
             version: 0.53.13
           - channel: sts
             version: latest
+          - channel: lts
+            version: 1.0.0
+          - channel: lts
+            version: latest
         archive-path: ["", "archive.bin"]
     steps:
       - uses: actions/checkout@v4

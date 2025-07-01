@@ -1,15 +1,15 @@
 import type { ObjectInfo } from "./gitcode";
 import * as core from "@actions/core";
-import { getSTSObjectInfo } from "./const";
+import { getLTSObjectInfo, getSTSObjectInfo } from "./const";
 import { useCacheOrDownload } from "./download";
 import { getGitLFSObject } from "./gitcode";
 import { configure, test } from "./path";
-import { detectCangjieVersion, getRandomPath } from "./utils";
+import { detectCangjieVersion } from "./utils";
 
 export async function action() {
   const channel = core.getInput("channel");
-  if (channel !== "sts" && channel !== "canary") {
-    core.setFailed("Invalid channel input, must be 'sts' or 'canary'");
+  if (channel !== "lts" && channel !== "sts" && channel !== "canary") {
+    core.setFailed("Invalid channel input, must be 'lts', 'sts' or 'canary'");
     return;
   }
 
@@ -34,6 +34,9 @@ export async function action() {
     let object: ObjectInfo;
     if (channel === "sts") {
       object = getSTSObjectInfo(version);
+    }
+    else if (channel === "lts") {
+      object = getLTSObjectInfo(version);
     }
     else {
       object = await getGitLFSObject(token, version);

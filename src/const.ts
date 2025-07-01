@@ -1,4 +1,4 @@
-import type {ObjectInfo} from "./gitcode";
+import type { ObjectInfo } from "./gitcode";
 import process from "node:process";
 import * as tool from "@actions/tool-cache";
 
@@ -85,6 +85,50 @@ const STS_0_53_18: Record<string, ObjectInfo> = {
     version: "0.53.18",
   },
 };
+
+const LTS_1_0_0: Record<string, ObjectInfo> = {
+  "win32-x64": {
+    name: "cangjie-sdk-windows-x64-1.0.0.zip",
+    sha256: "41375cc38b32a4dcca9e0576d23ff3f6f8f5d0dca6ca9c52ad1545e7df22b21f",
+    size: 338.2 * 1024 * 1024,
+    download: getDownloader(`${BASE_URL}?nsId=142267&fileName=cangjie-sdk-windows-x64-1.0.0.zip&objectKey=6863801f3bcda926055851dc`),
+    version: "1.0.0",
+  },
+  "darwin-arm64": {
+    name: "cangjie-sdk-mac-aarch64-1.0.0.tar.gz",
+    sha256: "e8cdf8570678d116b99186411da94a425f2febc5eee84624a98a5be7df03158d",
+    size: 205.2 * 1024 * 1024,
+    download: getDownloader(`${BASE_URL}?nsId=142267&fileName=cangjie-sdk-mac-aarch64-1.0.0.tar.gz&objectKey=68637e5c3bcda926055851d9`),
+    version: "1.0.0",
+  },
+  "linux-arm64": {
+    name: "cangjie-sdk-linux-aarch64-1.0.0.tar.gz",
+    sha256: "2da22ab90c302155658f7f554aa33b5f4de7870949cc79cb44c9ebf20b83793a",
+    size: 310.7 * 1024 * 1024,
+    download: getDownloader(`${BASE_URL}?nsId=142267&fileName=cangjie-sdk-linux-aarch64-1.0.0.tar.gz&objectKey=68637e793bcda926055851da`),
+    version: "1.0.0",
+  },
+  "linux-x64": {
+    name: "cangjie-sdk-linux-x64-1.0.0.tar.gz",
+    sha256: "8894e63a181bc0534af24263b449c2d8d4d9dfb16ff1270b793499fe06ce6dcf",
+    size: 294.5 * 1024 * 1024,
+    download: getDownloader(`${BASE_URL}?nsId=142267&fileName=cangjie-sdk-linux-x64-1.0.0.tar.gz&objectKey=68637fc53bcda926055851db`),
+    version: "1.0.0",
+  },
+};
+
+export function getLTSObjectInfo(version: string) {
+  if (version !== "1.0.0" && version !== "latest") {
+    throw new Error(`Unsupported LTS version ${version}`);
+  }
+
+  const info = LTS_1_0_0[`${process.platform}-${process.arch}`];
+  if (!info) {
+    throw new Error(`Unsupported platform: ${process.platform}-${process.arch}`);
+  }
+
+  return info;
+}
 
 const STS_DOWNLOADS: Record<string, Record<string, ObjectInfo>> = {
   "0.53.13": STS_0_53_13,
