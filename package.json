@@ -18,7 +18,7 @@
     "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript"
   },
   "devDependencies": {
-    "@actions/cache": "^4.0.3",
+    "@actions/cache": "^4.0.5",
     "@actions/core": "^1.11.1",
     "@actions/glob": "^0.5.0",
     "@actions/http-client": "^2.2.3",
