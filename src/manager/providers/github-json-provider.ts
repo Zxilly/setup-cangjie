@@ -61,22 +61,4 @@ export class GitHubJSONProvider extends SDKProvider {
       },
     };
   }
-
-  async getSupportedVersions(channel: string): Promise<string[]> {
-    const config = await this.loadConfig();
-    const channelConfig = config.channels[channel as keyof typeof config.channels];
-    if (!channelConfig) {
-      throw new Error(`Unsupported channel: ${channel}`);
-    }
-    return Object.keys(channelConfig.versions);
-  }
-
-  async getLatestVersion(channel: string): Promise<string> {
-    const config = await this.loadConfig();
-    const channelConfig = config.channels[channel as keyof typeof config.channels];
-    if (!channelConfig) {
-      throw new Error(`Unsupported channel: ${channel}`);
-    }
-    return channelConfig.latest;
-  }
 }

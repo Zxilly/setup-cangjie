@@ -27,26 +27,4 @@ export class SDKManager {
 
     return await this.githubProvider.getObjectInfo(channel, version, platform);
   }
-
-  async getSupportedVersions(channel: string): Promise<string[]> {
-    if (channel === "canary") {
-      if (!this.gitlfsProvider) {
-        throw new Error("GitLFS provider not configured for canary channel");
-      }
-      return await this.gitlfsProvider.getSupportedVersions(channel);
-    }
-
-    return await this.githubProvider.getSupportedVersions(channel);
-  }
-
-  async getLatestVersion(channel: string): Promise<string> {
-    if (channel === "canary") {
-      if (!this.gitlfsProvider) {
-        throw new Error("GitLFS provider not configured for canary channel");
-      }
-      return await this.gitlfsProvider.getLatestVersion(channel);
-    }
-
-    return await this.githubProvider.getLatestVersion(channel);
-  }
 }

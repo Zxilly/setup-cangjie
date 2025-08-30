@@ -16,12 +16,4 @@ export class GitLFSProvider extends SDKProvider {
     }
     return await getGitLFSObject(this.token, version);
   }
-
-  async getSupportedVersions(channel: string): Promise<string[]> {
-    throw new Error("GitLFS provider does not support listing versions");
-  }
-
-  async getLatestVersion(channel: string): Promise<string> {
-    return "latest";
-  }
 }

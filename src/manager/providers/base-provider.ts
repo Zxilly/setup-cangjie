@@ -24,6 +24,4 @@ export interface SDKConfigRoot {
 
 export abstract class SDKProvider {
   abstract getObjectInfo(channel: string, version: string, platform: string): Promise<ObjectInfo>;
-  abstract getSupportedVersions(channel: string): Promise<string[]>;
-  abstract getLatestVersion(channel: string): Promise<string>;
 }
