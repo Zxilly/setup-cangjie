@@ -27,5 +27,5 @@ outputs:
   version:
     description: 安装的仓颉版本
 runs:
-  using: node22
+  using: node24
   main: dist/index.js
