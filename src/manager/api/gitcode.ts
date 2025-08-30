@@ -1,10 +1,10 @@
-import type { BlobRoot, GitLFSResponseRoot, TagRoot, TreeRoot, UserRoot } from "./interface";
+import type { BlobRoot, GitLFSResponseRoot, TagRoot, TreeRoot, UserRoot } from "../types/interface";
 import * as core from "@actions/core";
 import * as http from "@actions/http-client";
 import * as tool from "@actions/tool-cache";
-import { version as pkgVersion } from "../package.json";
-import { getArchiveNameArch, getArchiveSuffix, getTargetRepo } from "./sys";
-import { buildBasicAuthHeader, mapHeader } from "./utils";
+import { version as pkgVersion } from "../../../package.json";
+import { getArchiveNameArch, getArchiveSuffix, getTargetRepo } from "../lib/sys";
+import { buildBasicAuthHeader, mapHeader } from "../lib/utils";
 
 export interface ObjectInfo {
   name: string;

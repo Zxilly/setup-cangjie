@@ -1,11 +1,11 @@
-import type { ObjectInfo } from "./gitcode";
-import path from "node:path";
+import type { ObjectInfo } from "./api/gitcode";
+import * as path from "node:path";
 import * as process from "node:process";
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
-import { getArchiveNameArch } from "./sys";
-import { getRandomPath } from "./utils";
+import { getArchiveNameArch } from "./lib/sys";
+import { getRandomPath } from "./lib/utils";
 
 const toolName = "cangjie";
 

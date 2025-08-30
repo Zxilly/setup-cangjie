@@ -1,8 +1,7 @@
-import type { ObjectInfo } from "./gitcode";
+import type { ObjectInfo } from "./manager/api/gitcode";
 import * as core from "@actions/core";
-import { getLTSObjectInfo, getSTSObjectInfo } from "./const";
-import { useCacheOrDownload } from "./download";
-import { getGitLFSObject } from "./gitcode";
+import { getSDKManager } from "./const";
+import { useCacheOrDownload } from "./manager/download";
 import { configure, test } from "./path";
 import { detectCangjieVersion } from "./utils";
 
@@ -31,16 +30,13 @@ export async function action() {
   const archivePath = core.getInput("archive-path");
 
   try {
-    let object: ObjectInfo;
-    if (channel === "sts") {
-      object = getSTSObjectInfo(version);
+    const sdkManager = getSDKManager();
+    
+    if (channel === "canary") {
+      sdkManager.setGitLFSProvider(token);
     }
-    else if (channel === "lts") {
-      object = getLTSObjectInfo(version);
-    }
-    else {
-      object = await getGitLFSObject(token, version);
-    }
+
+    const object: ObjectInfo = await sdkManager.getObjectInfo(channel, version);
 
     const dir = await useCacheOrDownload(object, toolCache, archivePath);
 
