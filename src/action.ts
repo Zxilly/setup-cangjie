@@ -31,7 +31,7 @@ export async function action() {
 
   try {
     const sdkManager = getSDKManager();
-    
+
     if (channel === "canary") {
       sdkManager.setGitLFSProvider(token);
     }

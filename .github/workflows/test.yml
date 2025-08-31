@@ -27,7 +27,7 @@ jobs:
             version: 1.0.0
           - channel: lts
             version: latest
-        archive-path: ["", "archive.bin"]
+        archive-path: ["", archive.bin]
     steps:
       - uses: actions/checkout@v5
 
