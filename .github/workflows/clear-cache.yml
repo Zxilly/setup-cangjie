@@ -22,10 +22,6 @@ jobs:
             exit 0
           fi
           
-          while IFS= read -r cache_key; do
-            if [ -n "$cache_key" ]; then
-              gh cache delete "$cache_key"
-            fi
-          done <<< "$caches"
+          gh cache delete --all
         env:
           GH_TOKEN: ${{ github.token }}
