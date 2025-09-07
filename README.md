@@ -15,7 +15,6 @@
 | ------------ | ---------------------------------------------------------------------------------------------------- | -------- | ------ |
 | channel      | 需要安装的仓颉版本通道，例如 lts, sts                                                                | 否       | lts    |
 | version      | 需要安装的仓颉版本，例如 1.0.0，latest 表示最新版，auto 表示优先从 cjpm.toml 获取版本，否则为 latest | 否       | auto   |
-| tool-cache   | 是否缓存仓颉 SDK                                                                                     | 否       | true   |
 | archive-path | 下载的 .zip/.tar.gz 文件的存储路径                                                                   | 否       |        |
 
 ### 输出
@@ -27,10 +26,9 @@
 ### 示例
 
 ```yaml
-- uses: Zxilly/setup-cangjie@v1
+- uses: Zxilly/setup-cangjie@v2
   with:
     channel: lts # 'lts' 或者 'sts'
     version: 1.0.0 # 需要安装的仓颉版本，latest 表示最新版，auto 表示自动获取
-    tool-cache: true # 是否缓存仓颉 SDK
     archive-path: ./cangjie-archive # 可选，下载的压缩包存储路径
 ```
