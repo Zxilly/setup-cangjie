@@ -1,58 +1,51 @@
-import type { ObjectInfo } from "./api/gitcode";
 import * as process from "node:process";
 import { CacheProvider } from "./providers/cache-provider";
-import { GitHubJSONProvider } from "./providers/github-json-provider";
-import { GitLFSProvider } from "./providers/gitlfs-provider";
+import { JSONProvider } from "./providers/json-provider";
+import { cacheArchive } from "./cache-utils";
+
+export interface ObjectInfo {
+  name: string;
+  sha256: string;
+  size: number;
+  download: (dest: string) => Promise<string>;
+  version?: string;
+}
 
 export class SDKManager {
   private cacheProvider: CacheProvider;
-  private githubProvider: GitHubJSONProvider;
-  private gitlfsProvider: GitLFSProvider | null = null;
+  private jsonProvider: JSONProvider;
 
   constructor() {
     this.cacheProvider = new CacheProvider();
-    this.githubProvider = new GitHubJSONProvider();
+    this.jsonProvider = new JSONProvider();
   }
 
-  setGitLFSProvider(token: string): void {
-    this.gitlfsProvider = new GitLFSProvider(token);
+  async cacheArchive(archivePath: string, channel: string, version: string, platform: string): Promise<void> {
+    await cacheArchive(archivePath, channel, version, platform);
   }
 
   async getObjectInfo(channel: string, version: string): Promise<ObjectInfo> {
     const platform = `${process.platform}-${process.arch}`;
 
-    // First try cache if available
-    if (await this.cacheProvider.isAvailable(channel, version, platform)) {
-      const cachedInfo = await this.cacheProvider.getObjectInfo(channel, version, platform);
+    if (channel !== "lts" && channel !== "sts") {
+      throw new Error(`Unsupported channel: ${channel}. Only 'lts' and 'sts' are supported.`);
+    }
+
+    const resolvedVersion = await this.jsonProvider.resolveVersion(channel, version);
+    if (!resolvedVersion) {
+      throw new Error(`Unsupported ${channel} version: ${version}`);
+    }
+
+    if (!await this.jsonProvider.isAvailable(channel, resolvedVersion, platform)) {
+      throw new Error(`JSON provider not available for channel: ${channel}, version: ${resolvedVersion}, platform: ${platform}`);
+    }
+
+    if (await this.cacheProvider.isAvailable(channel, resolvedVersion, platform)) {
+      const cachedInfo = await this.cacheProvider.getObjectInfo(channel, resolvedVersion, platform);
       return cachedInfo;
     }
 
-    // Then try appropriate provider based on channel
-    let objectInfo: ObjectInfo;
-    if (channel === "canary") {
-      if (!this.gitlfsProvider || !await this.gitlfsProvider.isAvailable(channel, version, platform)) {
-        throw new Error("GitLFS provider not available for canary channel");
-      }
-      objectInfo = await this.gitlfsProvider.getObjectInfo(channel, version, platform);
-    }
-    else {
-      if (!await this.githubProvider.isAvailable(channel, version, platform)) {
-        throw new Error(`GitHub provider not available for channel: ${channel}, version: ${version}, platform: ${platform}`);
-      }
-      objectInfo = await this.githubProvider.getObjectInfo(channel, version, platform);
-    }
-
-    // Cache the downloaded archive after successful download
-    const originalDownload = objectInfo.download;
-    objectInfo.download = async (dest: string) => {
-      const downloadedPath = await originalDownload(dest);
-
-      // Cache the archive file for future use
-      await this.cacheProvider.cacheArchive(downloadedPath, channel, version, platform);
-
-      return downloadedPath;
-    };
-
+    const objectInfo = await this.jsonProvider.getObjectInfo(channel, resolvedVersion, platform);
     return objectInfo;
   }
 }

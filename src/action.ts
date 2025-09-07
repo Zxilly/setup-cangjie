@@ -1,4 +1,4 @@
-import type { ObjectInfo } from "./manager/api/gitcode";
+import type { ObjectInfo } from "./manager/sdk-manager";
 import * as core from "@actions/core";
 import { getSDKManager } from "./const";
 import { useCacheOrDownload } from "./manager/download";
@@ -7,14 +7,8 @@ import { detectCangjieVersion } from "./utils";
 
 export async function action() {
   const channel = core.getInput("channel");
-  if (channel !== "lts" && channel !== "sts" && channel !== "canary") {
-    core.setFailed("Invalid channel input, must be 'lts', 'sts' or 'canary'");
-    return;
-  }
-
-  const token = core.getInput("token");
-  if (channel === "canary" && !token) {
-    core.setFailed("Missing token input for canary channel");
+  if (channel !== "lts" && channel !== "sts") {
+    core.setFailed("Invalid channel input, must be 'lts' or 'sts'");
     return;
   }
 
@@ -26,19 +20,14 @@ export async function action() {
     version = await detectCangjieVersion();
   }
 
-  const toolCache = core.getBooleanInput("tool-cache");
   const archivePath = core.getInput("archive-path");
 
   try {
     const sdkManager = getSDKManager();
 
-    if (channel === "canary") {
-      sdkManager.setGitLFSProvider(token);
-    }
-
     const object: ObjectInfo = await sdkManager.getObjectInfo(channel, version);
 
-    const dir = await useCacheOrDownload(object, toolCache, archivePath);
+    const dir = await useCacheOrDownload(object, archivePath);
 
     configure(dir);
     await test();

@@ -1,4 +1,4 @@
-import type { ObjectInfo } from "./api/gitcode";
+import type { ObjectInfo } from "./sdk-manager";
 import * as process from "node:process";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
@@ -21,7 +21,7 @@ async function extractArchive(archivePath: string, version: string): Promise<str
   return cacheDir;
 }
 
-export async function useCacheOrDownload(obj: ObjectInfo, _useToolCache: boolean, archivePath: string): Promise<string> {
+export async function useCacheOrDownload(obj: ObjectInfo, archivePath: string): Promise<string> {
   const version = obj.version ?? obj.sha256;
 
   // If archive path is empty, generate a random path

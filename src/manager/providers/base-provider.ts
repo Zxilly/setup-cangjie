@@ -1,5 +1,3 @@
-import type { ObjectInfo } from "../api/gitcode";
-
 export interface SDKConfig {
   name: string;
   sha256: string;
@@ -20,6 +18,14 @@ export interface SDKConfigRoot {
     sts: ChannelConfig;
     lts: ChannelConfig;
   };
+}
+
+export interface ObjectInfo {
+  name: string;
+  sha256: string;
+  size: number;
+  download: (dest: string) => Promise<string>;
+  version?: string;
 }
 
 export abstract class SDKProvider {

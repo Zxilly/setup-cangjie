@@ -15,10 +15,6 @@ jobs:
       matrix:
         os: [macos-14, windows-latest, ubuntu-latest, ubuntu-24.04-arm]
         target:
-          - channel: canary
-            version: 0.58.3
-          - channel: canary
-            version: latest
           - channel: sts
             version: 0.53.13
           - channel: sts
@@ -35,7 +31,6 @@ jobs:
         uses: ./
         with:
           channel: ${{ matrix.target.channel }}
-          token: ${{ secrets.GITCODE_TOKEN }}
           version: ${{ matrix.target.version }}
           tool-cache: true
           archive-path: ${{ matrix.archive-path }}
