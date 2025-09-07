@@ -32,7 +32,6 @@ jobs:
         with:
           channel: ${{ matrix.target.channel }}
           version: ${{ matrix.target.version }}
-          tool-cache: true
           archive-path: ${{ matrix.archive-path }}
       - name: Verify setup
         shell: bash

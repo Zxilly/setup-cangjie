@@ -85,9 +85,9 @@
         },
         "1.0.1": {
           "win32-x64": {
-            "name": "cangjie-sdk-windows-x64-1.0.1.exe",
-            "sha256": "d03dfb1068a7cf0b6bfaf76b47502a27833811d2eb9552c9444b501f29bf24ab",
-            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-windows-x64-1.0.1.exe&objectKey=68a677ebd1b22272d50f15ec"
+            "name": "cangjie-sdk-windows-x64-1.0.1.zip",
+            "sha256": "6ca763dabf1ee43fccc420f96a6ca827d5116dcbe0ef2a5c80869194124bcaa8",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-windows-x64-1.0.1.zip&objectKey=68a6780fd1b22272d50f15ee"
           },
           "darwin-arm64": {
             "name": "cangjie-sdk-mac-aarch64-1.0.1.tar.gz",
