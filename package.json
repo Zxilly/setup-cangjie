@@ -2,7 +2,8 @@
   "name": "setup-cangjie",
   "version": "2.0.0",
   "private": true,
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.17.1",
+  "type": "module",
   "description": "Setup Cangjie on GitHub Actions",
   "author": "Zxilly",
   "license": "MIT",
@@ -18,22 +19,22 @@
     "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript"
   },
   "devDependencies": {
-    "@actions/cache": "^4.0.5",
+    "@actions/cache": "^4.1.0",
     "@actions/core": "^1.11.1",
     "@actions/glob": "^0.5.0",
     "@actions/http-client": "^2.2.3",
     "@actions/io": "^1.1.3",
     "@actions/tool-cache": "^2.0.2",
-    "@antfu/eslint-config": "^5.2.2",
+    "@antfu/eslint-config": "^5.4.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.4",
-    "@tsconfig/node20": "^20.1.6",
-    "@types/node": "^24.4.0",
-    "eslint": "^9.35.0",
-    "rollup": "^4.52.0",
+    "@tsconfig/node24": "^24.0.1",
+    "@types/node": "^24.5.2",
+    "eslint": "^9.36.0",
+    "rollup": "^4.52.3",
     "rollup-plugin-visualizer": "^6.0.3",
     "smol-toml": "^1.4.2",
     "tsx": "^4.20.6",
@@ -43,5 +44,8 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "dependencies": {
+    "@tsconfig/node22": "^22.0.2"
   }
 }
