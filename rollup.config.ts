@@ -11,6 +11,7 @@ export default defineConfig({
   output: {
     file: "dist/index.js",
     format: "cjs",
+    sourcemap: true,
   },
   plugins: [
     nodeResolve({
@@ -19,7 +20,9 @@ export default defineConfig({
     json(),
     commonjs(),
     typescript(),
-    terser(),
+    terser({
+      sourceMap: true,
+    }),
     visualizer(),
   ],
   treeshake: {
