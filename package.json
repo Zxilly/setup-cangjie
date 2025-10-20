@@ -34,7 +34,7 @@
     "@tsconfig/node24": "^24.0.1",
     "@types/node": "^24.8.1",
     "eslint": "^9.38.0",
-    "rollup": "^4.52.4",
+    "rollup": "^4.52.5",
     "rollup-plugin-visualizer": "^6.0.4",
     "smol-toml": "^1.4.2",
     "tsx": "^4.20.6",
