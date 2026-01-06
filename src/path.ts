@@ -45,6 +45,38 @@ function sourceEnvSetup(cjBase: string): Record<string, string> {
   return parseEnv(output);
 }
 
+// Environment variables that should be skipped in the variables diff loop
+const IGNORED_ENV_VARS = new Set([
+  // Path variables are handled separately above, skip them in the loop
+  "PATH",
+  "Path",
+  // Shell internal variables that change naturally when sourcing scripts
+  "PWD",
+  "OLDPWD",
+  "SHLVL",
+  "_",
+  "SHELL",
+  "TERM",
+  "COLUMNS",
+  "LINES",
+  "HOSTNAME",
+  "HOST",
+  "RANDOM",
+  "SECONDS",
+  // Prompt variables
+  "PS1",
+  "PS2",
+  "PS3",
+  "PS4",
+  // Windows/PowerShell specific
+  "PATHEXT",
+  "PROMPT",
+  "PSExecutionPolicyPreference",
+  "PSModulePath",
+  "COMSPEC",
+  "__COMPAT_LAYER",
+]);
+
 function diffEnv(before: Record<string, string>, after: Record<string, string>): EnvChanges {
   const changes: EnvChanges = {
     path: [],
@@ -67,7 +99,7 @@ function diffEnv(before: Record<string, string>, after: Record<string, string>):
   }
 
   for (const [key, value] of Object.entries(after)) {
-    if (key === pathKey || key === "PATH" || key === "Path") {
+    if (IGNORED_ENV_VARS.has(key)) {
       continue;
     }
     if (before[key] !== value) {
