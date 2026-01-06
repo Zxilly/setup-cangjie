@@ -31,7 +31,8 @@ export async function cacheArchive(archivePath: string, channel: string, version
 
   const cacheKey = getCacheKey(channel, version, platform);
   const cacheDir = getCacheDir();
-  const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`);
+  const cachedArchivePath = path.normalize(path.join(cacheDir, `${cacheKey}.archive`))
+    .replace(/\\/g, "/");
 
   core.info(`Caching archive: ${absoluteArchivePath} -> ${cachedArchivePath}`);
 

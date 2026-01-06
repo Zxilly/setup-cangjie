@@ -52,7 +52,7 @@ export class CacheProvider extends SDKProvider {
     }
 
     const cacheDir = getCacheDir();
-    const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`);
+    const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`).replace(/\\/g, "/");
 
     // Ensure cache directory exists
     fs.mkdirSync(cacheDir, { recursive: true });
