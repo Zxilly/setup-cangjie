@@ -29,6 +29,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Install OpenSSL on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install openssl
+          echo "DYLD_LIBRARY_PATH=$(brew --prefix openssl)/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+
       - name: Test on ${{ matrix.os }}
         uses: ./
         with:
