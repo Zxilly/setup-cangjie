@@ -22,10 +22,21 @@ function getEnvSnapshot(): Record<string, string> {
 }
 
 function sourceEnvSetup(cjBase: string): Record<string, string> {
-  const envSetupPath = path.join(cjBase, "envsetup.sh");
+  let command: string;
+  let envSetupPath: string;
+
+  if (process.platform === "win32") {
+    envSetupPath = path.join(cjBase, "envsetup.ps1");
+    command = `powershell -NoProfile -ExecutionPolicy Bypass -Command ". '${envSetupPath}'; Get-ChildItem Env: | ForEach-Object { \\"$($_.Name)=$($_.Value)\\" }"`;
+  }
+  else {
+    envSetupPath = path.join(cjBase, "envsetup.sh");
+    command = `bash -c 'source "${envSetupPath}" && env'`;
+  }
+
   core.info(`Sourcing ${envSetupPath}`);
 
-  const output = cp.execSync(`bash -c 'source "${envSetupPath}" && env'`, {
+  const output = cp.execSync(command, {
     cwd: cjBase,
     encoding: "utf-8",
     env: process.env as Record<string, string>,
