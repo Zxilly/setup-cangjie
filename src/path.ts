@@ -3,85 +3,94 @@ import path from "node:path";
 import * as process from "node:process";
 import * as core from "@actions/core";
 import * as io from "@actions/io";
-import { getLLVMNameArch } from "./sys";
+import { parse as parseEnv } from "dotenv";
 import { printCommand } from "./utils";
+
+interface EnvChanges {
+  path: string[];
+  variables: Record<string, string>;
+}
+
+function getEnvSnapshot(): Record<string, string> {
+  const snapshot: Record<string, string> = {};
+  for (const [key, value] of Object.entries(process.env)) {
+    if (value !== undefined) {
+      snapshot[key] = value;
+    }
+  }
+  return snapshot;
+}
+
+function sourceEnvSetup(cjBase: string): Record<string, string> {
+  const envSetupPath = path.join(cjBase, "envsetup.sh");
+  core.info(`Sourcing ${envSetupPath}`);
+
+  const output = cp.execSync(`bash -c 'source "${envSetupPath}" && env'`, {
+    cwd: cjBase,
+    encoding: "utf-8",
+    env: process.env as Record<string, string>,
+  });
+
+  return parseEnv(output);
+}
+
+function diffEnv(before: Record<string, string>, after: Record<string, string>): EnvChanges {
+  const changes: EnvChanges = {
+    path: [],
+    variables: {},
+  };
+
+  const pathKey = process.platform === "win32" ? "Path" : "PATH";
+  const beforePath = before[pathKey] || "";
+  const afterPath = after[pathKey] || "";
+
+  if (afterPath !== beforePath) {
+    const beforePaths = new Set(beforePath.split(path.delimiter).filter(p => p));
+    const afterPaths = afterPath.split(path.delimiter).filter(p => p);
+
+    for (const p of afterPaths) {
+      if (!beforePaths.has(p)) {
+        changes.path.push(p);
+      }
+    }
+  }
+
+  for (const [key, value] of Object.entries(after)) {
+    if (key === pathKey || key === "PATH" || key === "Path") {
+      continue;
+    }
+    if (before[key] !== value) {
+      changes.variables[key] = value;
+    }
+  }
+
+  return changes;
+}
+
+function applyChangesToGitHub(changes: EnvChanges): void {
+  for (const p of changes.path) {
+    core.info(`Adding to PATH: ${p}`);
+    core.addPath(p);
+  }
+
+  for (const [key, value] of Object.entries(changes.variables)) {
+    core.info(`Setting ${key}`);
+    core.exportVariable(key, value);
+  }
+}
 
 export function configure(dir: string) {
   core.info("Configuring environment");
 
   const cjBase = path.join(dir, "cangjie");
-  core.exportVariable("CANGJIE_HOME", cjBase);
 
-  switch (process.platform) {
-    case "win32":
-      configureWindows(cjBase);
-      break;
-    case "linux":
-      configureLinux(cjBase);
-      break;
-    case "darwin":
-      configureDarwin(cjBase);
-      break;
-    default:
-      throw new Error(`Unsupported platform: ${process.platform}`);
-  }
+  const before = getEnvSnapshot();
+  const after = sourceEnvSetup(cjBase);
+  const changes = diffEnv(before, after);
+
+  applyChangesToGitHub(changes);
 
   core.info("Environment configured");
-}
-
-function ap(...args: string[]) {
-  core.addPath(path.join(...args));
-}
-
-function configureWindows(dir: string) {
-  ap(dir, "bin");
-  ap(dir, "tools", "bin");
-  ap(dir, "tools", "lib");
-  ap(dir, "runtime", "lib", "windows_x86_64_llvm");
-  ap(dir, "third_party", "llvm", "lldb", "lib");
-  ap(process.env.USERPROFILE!, ".cjpm", "bin");
-}
-
-function configureLinux(dir: string) {
-  ap(dir, "bin");
-  ap(dir, "tools", "bin");
-  ap(process.env.HOME!, ".cjpm", "bin");
-
-  const ldPaths = [
-    `${dir}/runtime/lib/linux_${getLLVMNameArch()}_llvm`,
-    `${dir}/tools/lib`,
-  ];
-  if (process.env.LD_LIBRARY_PATH) {
-    ldPaths.push(process.env.LD_LIBRARY_PATH);
-  }
-  const ldPath = ldPaths.join(path.delimiter);
-
-  core.exportVariable("LD_LIBRARY_PATH", ldPath);
-}
-
-function configureDarwin(dir: string) {
-  core.addPath(`${dir}/bin`);
-  core.addPath(`${dir}/tools/bin`);
-  core.addPath(`${process.env.HOME}/.cjpm/bin`);
-
-  const ldPaths = [
-    `${dir}/runtime/lib/darwin_${getLLVMNameArch()}_llvm`,
-    `${dir}/tools/lib`,
-  ];
-  if (process.env.DYLD_LIBRARY_PATH) {
-    ldPaths.push(process.env.DYLD_LIBRARY_PATH);
-  }
-  const ldPath = ldPaths.join(path.delimiter);
-
-  core.exportVariable("DYLD_LIBRARY_PATH", ldPath);
-
-  if (!process.env.SDKROOT) {
-    const v = cp.execSync("xcrun --sdk macosx --show-sdk-path").toString();
-    core.exportVariable("SDKROOT", v.trim());
-  }
-
-  cp.execSync(`xattr -dr com.apple.quarantine ${dir}/*`);
-  cp.execSync(`codesign -s - -f --preserve-metadata=entitlements,requirements,flags,runtime ${dir}/third_party/llvm/bin/debugserver`);
 }
 
 export async function test() {

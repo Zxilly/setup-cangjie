@@ -37,6 +37,7 @@
     "@rollup/plugin-typescript": "^12.3.0",
     "@tsconfig/node24": "^24.0.3",
     "@types/node": "^25.0.3",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.2",
     "rollup": "^4.55.1",
     "rollup-plugin-visualizer": "^6.0.5",
