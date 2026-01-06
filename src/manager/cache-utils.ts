@@ -20,15 +20,29 @@ export async function cacheArchive(archivePath: string, channel: string, version
     return;
   }
 
+  // Verify source archive exists before attempting to cache
+  if (!fs.existsSync(archivePath)) {
+    core.warning(`Source archive does not exist, skipping cache: ${archivePath}`);
+    return;
+  }
+
   const cacheKey = getCacheKey(channel, version, platform);
   const cacheDir = getCacheDir();
   const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`);
+
+  core.debug(`Caching archive: ${archivePath} -> ${cachedArchivePath}`);
 
   // Ensure cache directory exists
   fs.mkdirSync(cacheDir, { recursive: true });
 
   // Copy archive to cache location
   fs.copyFileSync(archivePath, cachedArchivePath);
+
+  // Verify copy succeeded before saving to cache
+  if (!fs.existsSync(cachedArchivePath)) {
+    core.warning(`Failed to copy archive to cache location: ${cachedArchivePath}`);
+    return;
+  }
 
   try {
     const cacheId = await cache.saveCache([cachedArchivePath], cacheKey);

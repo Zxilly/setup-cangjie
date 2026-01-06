@@ -1,4 +1,5 @@
 import type { ObjectInfo } from "./sdk-manager";
+import * as path from "node:path";
 import * as process from "node:process";
 import * as core from "@actions/core";
 import * as tool from "@actions/tool-cache";
@@ -25,8 +26,12 @@ export async function useCacheOrDownload(obj: ObjectInfo, archivePath: string): 
   const version = obj.version ?? obj.sha256;
 
   // If archive path is empty, generate a random path
+  // Otherwise, resolve to absolute path to avoid working directory issues
   if (archivePath === "") {
     archivePath = getRandomPath();
+  }
+  else if (!path.isAbsolute(archivePath)) {
+    archivePath = path.resolve(archivePath);
   }
 
   // Check if we already have a cached version in tool cache
