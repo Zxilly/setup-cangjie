@@ -3,8 +3,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
+import { getCacheDir, getCacheKey } from "../cache-utils";
 import { SDKProvider } from "./base-provider";
-import { getCacheKey, getCacheDir, cacheArchive } from "../cache-utils";
 
 export class CacheProvider extends SDKProvider {
   async isAvailable(channel: string, version: string, platform: string): Promise<boolean> {

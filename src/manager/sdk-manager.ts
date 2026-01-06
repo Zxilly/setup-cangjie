@@ -1,7 +1,7 @@
 import * as process from "node:process";
+import { cacheArchive } from "./cache-utils";
 import { CacheProvider } from "./providers/cache-provider";
 import { JSONProvider } from "./providers/json-provider";
-import { cacheArchive } from "./cache-utils";
 
 export interface ObjectInfo {
   name: string;

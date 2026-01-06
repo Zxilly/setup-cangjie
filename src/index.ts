@@ -1,5 +1,4 @@
-import "source-map-support/register";
 import { action } from "./action";
+import "source-map-support/register";
 
 action();
-
