@@ -10,7 +10,7 @@ export function printCommand(command: string) {
   core.info(output);
 }
 
-export async function detectCangjieVersion(): Promise<string> {
+export async function detectCangjieVersion(): Promise<string | undefined> {
   const globber = await glob.create("**/cjpm.toml");
 
   for await (const file of globber.globGenerator()) {
@@ -30,6 +30,6 @@ export async function detectCangjieVersion(): Promise<string> {
     }
   }
 
-  core.warning("No version detected, defaulting to latest");
-  return "latest";
+  core.warning("No version detected from cjpm.toml");
+  return undefined;
 }
