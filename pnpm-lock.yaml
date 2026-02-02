@@ -25,8 +25,8 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       '@actions/http-client':
-        specifier: ^3.0.1
-        version: 3.0.1
+        specifier: ^4.0.0
+        version: 4.0.0
       '@actions/io':
         specifier: ^2.0.0
         version: 2.0.0
@@ -107,9 +107,6 @@ packages:
 
   '@actions/http-client@2.2.3':
     resolution: {integrity: sha512-mx8hyJi/hjFvbPokCg4uRd4ZX78t+YyRPtnKWwIl+RzNaVuFpQHfmlGVfsKEJN8LwTCvL+DfVgAM04XaHkm6bA==}
-
-  '@actions/http-client@3.0.1':
-    resolution: {integrity: sha512-SbGS8c/vySbNO3kjFgSW77n83C4MQx/Yoe+b1hAdpuvfHxnkHzDq2pWljUpAA56Si1Gae/7zjeZsV0CYjmLo/w==}
 
   '@actions/http-client@3.0.2':
     resolution: {integrity: sha512-JP38FYYpyqvUsz+Igqlc/JG6YO9PaKuvqjM3iGvaLqFnJ7TFmcLyy2IDrY0bI0qCQug8E9K+elv5ZNfw62ZJzA==}
@@ -2445,7 +2442,7 @@ snapshots:
       '@actions/core': 2.0.3
       '@actions/exec': 2.0.0
       '@actions/glob': 0.5.0
-      '@actions/http-client': 3.0.1
+      '@actions/http-client': 3.0.2
       '@actions/io': 2.0.0
       '@azure/abort-controller': 1.1.0
       '@azure/core-rest-pipeline': 1.22.2
@@ -2492,11 +2489,6 @@ snapshots:
       tunnel: 0.0.6
       undici: 5.29.0
 
-  '@actions/http-client@3.0.1':
-    dependencies:
-      tunnel: 0.0.6
-      undici: 5.29.0
-
   '@actions/http-client@3.0.2':
     dependencies:
       tunnel: 0.0.6
@@ -2517,7 +2509,7 @@ snapshots:
     dependencies:
       '@actions/core': 2.0.3
       '@actions/exec': 2.0.0
-      '@actions/http-client': 3.0.1
+      '@actions/http-client': 3.0.2
       '@actions/io': 2.0.0
       semver: 6.3.1
 
