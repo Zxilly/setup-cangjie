@@ -29,7 +29,7 @@
     "@actions/http-client": "^4.0.0",
     "@actions/io": "^3.0.2",
     "@actions/tool-cache": "^3.0.0",
-    "@antfu/eslint-config": "^7.2.0",
+    "@antfu/eslint-config": "^7.3.0",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
