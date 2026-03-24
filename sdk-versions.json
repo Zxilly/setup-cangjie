@@ -82,9 +82,36 @@
             "sha256": "cfd9f4e8b435b75be808484f120e81d0004b46b857567cd0ab84c32c458b6cf6",
             "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-linux-x64-1.1.0-beta.23.tar.gz&objectKey=69b7a52a6e8ed61e6e07fd2c"
           }
+        },
+        "1.1.0-beta.24": {
+          "win32-x64": {
+            "name": "cangjie-sdk-windows-x64-1.1.0-beta.24.zip",
+            "sha256": "971242d5bbfc5137eb958d0160819b210b91b8c18f3a91712c374c60621bfcbe",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-windows-x64-1.1.0-beta.24.zip&objectKey=69c101766e8ed61e6e07fd33"
+          },
+          "darwin-arm64": {
+            "name": "cangjie-sdk-mac-aarch64-1.1.0-beta.24.tar.gz",
+            "sha256": "ef4268da585673dbc07d88b5e7172a5fe96d2d6ce82278ca2703eaf3f501eb65",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-mac-aarch64-1.1.0-beta.24.tar.gz&objectKey=69c1014a6e8ed61e6e07fd31"
+          },
+          "darwin-x64": {
+            "name": "cangjie-sdk-mac-x64-1.1.0-beta.24.tar.gz",
+            "sha256": "dfa5a5bba0fd13d0ac870af75c9a35196891726c538c708473596d3d4aaaf161",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-mac-x64-1.1.0-beta.24.tar.gz&objectKey=69c101536e8ed61e6e07fd32"
+          },
+          "linux-arm64": {
+            "name": "cangjie-sdk-linux-aarch64-1.1.0-beta.24.tar.gz",
+            "sha256": "3293f10fd0feaaa7febbafa2138a135589ea2de636bf277cc472dcf93cda9c2e",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-linux-aarch64-1.1.0-beta.24.tar.gz&objectKey=69c1028a6e8ed61e6e07fd35"
+          },
+          "linux-x64": {
+            "name": "cangjie-sdk-linux-x64-1.1.0-beta.24.tar.gz",
+            "sha256": "7cd6fe02d67480ab2c11bdceaf002d870c17dc894eb5fcbf8fb2ba5466ecd947",
+            "url": "https://cangjie-lang.cn/v1/files/auth/downLoad?nsId=142267&fileName=cangjie-sdk-linux-x64-1.1.0-beta.24.tar.gz&objectKey=69c102166e8ed61e6e07fd34"
+          }
         }
       },
-      "latest": "1.1.0-beta.23"
+      "latest": "1.1.0-beta.24"
     },
     "lts": {
       "versions": {
