@@ -6,7 +6,7 @@ import { SDKProvider } from "./base-provider";
 
 export class JSONProvider extends SDKProvider {
   private config: SDKConfigRoot | null = null;
-  private readonly configUrl: string = "https://raw.githubusercontent.com/Zxilly/setup-cangjie/master/sdk-versions.json";
+  private readonly configUrl: string = "https://raw.githubusercontent.com/Zxilly/cangjie-version-manifest/refs/heads/master/versions.json";
 
   constructor() {
     super();
