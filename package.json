@@ -1,7 +1,7 @@
 {
   "name": "setup-cangjie",
   "type": "module",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "description": "Setup Cangjie on GitHub Actions",
