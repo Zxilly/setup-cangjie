@@ -16,6 +16,9 @@ inputs:
   archive-path:
     description: 下载的 .zip/.tar.gz 文件的存储路径
     required: false
+  repo-token:
+    description: 仓颉中心仓认证 token (cangjie-repo.toml 中的 repository.home.token)
+    required: false
 outputs:
   version:
     description: 安装的仓颉版本

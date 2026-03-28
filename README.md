@@ -16,6 +16,7 @@
 | channel      | 需要安装的仓颉版本通道，例如 lts, sts, nightly                                                       | 否       | lts    |
 | version      | 需要安装的仓颉版本，例如 1.0.0，latest 表示最新版，auto 表示优先从 cjpm.toml 获取版本，否则为 latest。nightly 通道需要指定完整版本号 | 否       | auto   |
 | archive-path | 下载的 .zip/.tar.gz 文件的存储路径                                                                   | 否       |        |
+| repo-token   | 仓颉中心仓认证 token，设置后会生成 `~/.cjpm/cangjie-repo.toml` 配置文件                              | 否       |        |
 
 ### 输出
 
@@ -40,4 +41,12 @@
   with:
     channel: nightly
     version: 1.1.0-alpha.20260106020001 # nightly 需要指定完整版本号
+```
+
+#### 配置中心仓 Token
+
+```yaml
+- uses: Zxilly/setup-cangjie@v2
+  with:
+    repo-token: ${{ secrets.CANGJIE_REPO_TOKEN }}
 ```

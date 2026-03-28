@@ -5,6 +5,8 @@ import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import { getArchiveNameArch } from "./lib/sys";
 
+const BACKSLASH_RE = /\\/g;
+
 export function getCacheKey(channel: string, version: string, platform: string): string {
   return `cangjie-archive-${channel}-${version}-${platform}-${getArchiveNameArch()}`;
 }
@@ -32,7 +34,7 @@ export async function cacheArchive(archivePath: string, channel: string, version
   const cacheKey = getCacheKey(channel, version, platform);
   const cacheDir = getCacheDir();
   const cachedArchivePath = path.normalize(path.join(cacheDir, `${cacheKey}.archive`))
-    .replace(/\\/g, "/");
+    .replace(BACKSLASH_RE, "/");
 
   core.info(`Caching archive: ${absoluteArchivePath} -> ${cachedArchivePath}`);
 

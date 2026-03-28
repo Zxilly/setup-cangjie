@@ -3,7 +3,7 @@
   "type": "module",
   "version": "2.1.0",
   "private": true,
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.33.0",
   "description": "Setup Cangjie on GitHub Actions",
   "author": "Zxilly",
   "license": "MIT",
@@ -38,12 +38,12 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^25.5.0",
     "dotenv": "^17.3.1",
-    "eslint": "^10.0.3",
-    "rollup": "^4.59.0",
+    "eslint": "^10.1.0",
+    "rollup": "^4.60.0",
     "rollup-plugin-visualizer": "^7.0.1",
-    "smol-toml": "^1.6.0",
+    "smol-toml": "^1.6.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

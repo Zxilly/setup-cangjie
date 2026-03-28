@@ -3,6 +3,7 @@ import * as core from "@actions/core";
 import { getSDKManager } from "./const";
 import { useCacheOrDownload } from "./manager/download";
 import { configure, test } from "./path";
+import { configureRepoConfig } from "./repo-config";
 import { detectCangjieVersion } from "./utils";
 
 export async function action() {
@@ -49,6 +50,7 @@ export async function action() {
     const dir = await useCacheOrDownload(object, archivePath);
 
     configure(dir);
+    await configureRepoConfig();
     await test();
   }
   catch (error: any) {

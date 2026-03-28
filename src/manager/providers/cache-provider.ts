@@ -6,6 +6,8 @@ import * as core from "@actions/core";
 import { getCacheDir, getCacheKey } from "../cache-utils";
 import { SDKProvider } from "./base-provider";
 
+const BACKSLASH_RE = /\\/g;
+
 export class CacheProvider extends SDKProvider {
   async isAvailable(channel: string, version: string, platform: string): Promise<boolean> {
     // Check if GitHub Actions cache is available
@@ -52,7 +54,7 @@ export class CacheProvider extends SDKProvider {
     }
 
     const cacheDir = getCacheDir();
-    const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`).replace(/\\/g, "/");
+    const cachedArchivePath = path.join(cacheDir, `${cacheKey}.archive`).replace(BACKSLASH_RE, "/");
 
     // Ensure cache directory exists
     fs.mkdirSync(cacheDir, { recursive: true });
