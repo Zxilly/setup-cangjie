@@ -13,17 +13,21 @@ export async function configureRepoConfig(): Promise<void> {
 
   core.setSecret(token);
 
+  const dir = path.join(homedir(), ".cjpm");
+
   const config = {
     repository: {
+      cache: {
+        path: dir,
+      },
       home: {
+        registry: "https://pkg.cangjie-lang.cn/registry",
         token,
       },
     },
   };
 
   const tomlContent = stringify(config);
-
-  const dir = path.join(homedir(), ".cjpm");
   await mkdir(dir, { recursive: true });
 
   const filePath = path.join(dir, "cangjie-repo.toml");
