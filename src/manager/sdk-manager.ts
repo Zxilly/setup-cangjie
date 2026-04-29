@@ -4,6 +4,7 @@ import { cacheArchive } from "./cache-utils";
 import { CacheProvider } from "./providers/cache-provider";
 import { JSONProvider } from "./providers/json-provider";
 import { NightlyProvider } from "./providers/nightly-provider";
+import { createToolchainKey } from "./target";
 
 export interface ObjectInfo {
   name: string;
@@ -11,6 +12,12 @@ export interface ObjectInfo {
   size: number;
   download: (dest: string) => Promise<string>;
   version?: string;
+  cacheVersion?: string;
+  archiveCache?: {
+    channel: string;
+    version: string;
+    platform: string;
+  };
 }
 
 export class SDKManager {
@@ -28,8 +35,8 @@ export class SDKManager {
     await cacheArchive(archivePath, channel, version, platform);
   }
 
-  async resolveChannel(version: string): Promise<string> {
-    const platform = `${process.platform}-${process.arch}`;
+  async resolveChannel(version: string, target = ""): Promise<string> {
+    const platform = createToolchainKey(process.platform, process.arch, target);
 
     // Try LTS first
     core.info(`Checking if version ${version} exists in LTS channel...`);
@@ -60,8 +67,8 @@ export class SDKManager {
     throw new Error(`Version ${version} not found in any channel (lts, sts, nightly)`);
   }
 
-  async getObjectInfo(channel: string, version: string): Promise<ObjectInfo> {
-    const platform = `${process.platform}-${process.arch}`;
+  async getObjectInfo(channel: string, version: string, target = ""): Promise<ObjectInfo> {
+    const platform = createToolchainKey(process.platform, process.arch, target);
 
     if (channel !== "lts" && channel !== "sts" && channel !== "nightly") {
       throw new Error(`Unsupported channel: ${channel}. Only 'lts', 'sts' and 'nightly' are supported.`);

@@ -34,6 +34,7 @@ export class CacheProvider extends SDKProvider {
         sha256: "",
         size: 0,
         version,
+        cacheVersion: `${version}-${platform}`,
         download: async (dest: string) => {
           // Copy cached file to destination
           if (dest !== cachedArchivePath) {

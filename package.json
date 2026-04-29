@@ -1,7 +1,7 @@
 {
   "name": "setup-cangjie",
   "type": "module",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "description": "Setup Cangjie on GitHub Actions",
@@ -15,6 +15,7 @@
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
+    "test": "node --import tsx --test tests/*.test.ts",
     "dev": "tsx src/index.ts",
     "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript"
   },

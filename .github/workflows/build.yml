@@ -18,4 +18,5 @@ jobs:
       - name: Build test
         run: |
           pnpm install
+          pnpm test
           pnpm run build

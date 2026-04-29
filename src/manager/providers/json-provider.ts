@@ -1,7 +1,6 @@
 import type { ObjectInfo, SDKConfigRoot } from "./base-provider";
 import * as http from "@actions/http-client";
 import * as tool from "@actions/tool-cache";
-import { cacheArchive } from "../cache-utils";
 import { SDKProvider } from "./base-provider";
 
 export class JSONProvider extends SDKProvider {
@@ -90,19 +89,13 @@ export class JSONProvider extends SDKProvider {
       sha256: platformConfig.sha256,
       size: 0,
       version: resolvedVersion,
-      download: async (dest: string) => {
-        const downloadedPath = await tool.downloadTool(platformConfig.url, dest);
-
-        try {
-          await cacheArchive(downloadedPath, channel, resolvedVersion, platform);
-        }
-        catch (error) {
-          // Don't fail the download if caching fails, just log it
-          console.warn(`Failed to cache archive: ${error}`);
-        }
-
-        return downloadedPath;
+      cacheVersion: `${resolvedVersion}-${platform}`,
+      archiveCache: {
+        channel,
+        version: resolvedVersion,
+        platform,
       },
+      download: async (dest: string) => await tool.downloadTool(platformConfig.url, dest),
     };
   }
 }

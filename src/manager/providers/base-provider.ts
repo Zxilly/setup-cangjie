@@ -26,6 +26,12 @@ export interface ObjectInfo {
   size: number;
   download: (dest: string) => Promise<string>;
   version?: string;
+  cacheVersion?: string;
+  archiveCache?: {
+    channel: string;
+    version: string;
+    platform: string;
+  };
 }
 
 export abstract class SDKProvider {

@@ -2,6 +2,7 @@ import type { ObjectInfo } from "./manager/sdk-manager";
 import * as core from "@actions/core";
 import { getSDKManager } from "./const";
 import { useCacheOrDownload } from "./manager/download";
+import { normalizeTarget } from "./manager/target";
 import { configure, test } from "./path";
 import { configureRepoConfig } from "./repo-config";
 import { detectCangjieVersion } from "./utils";
@@ -10,6 +11,7 @@ export async function action() {
   let channel = core.getInput("channel");
   let version = core.getInput("version");
   const archivePath = core.getInput("archive-path");
+  const targetInput = core.getInput("target");
 
   if (channel !== "lts" && channel !== "sts" && channel !== "nightly") {
     core.setFailed("Invalid channel input, must be 'lts', 'sts' or 'nightly'");
@@ -18,6 +20,7 @@ export async function action() {
 
   try {
     const sdkManager = getSDKManager();
+    const target = normalizeTarget(targetInput);
 
     if (version === "auto") {
       const detectedVersion = await detectCangjieVersion();
@@ -26,7 +29,7 @@ export async function action() {
         // If detected a specific version, try to resolve channel
         core.info(`Auto-detected version: ${detectedVersion}, resolving channel...`);
         version = detectedVersion;
-        channel = await sdkManager.resolveChannel(detectedVersion);
+        channel = await sdkManager.resolveChannel(detectedVersion, target);
         core.info(`Resolved channel: ${channel}`);
       }
       else {
@@ -45,7 +48,7 @@ export async function action() {
       return;
     }
 
-    const object: ObjectInfo = await sdkManager.getObjectInfo(channel, version);
+    const object: ObjectInfo = await sdkManager.getObjectInfo(channel, version, target);
 
     const dir = await useCacheOrDownload(object, archivePath);
 

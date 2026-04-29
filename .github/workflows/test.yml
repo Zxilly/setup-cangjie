@@ -24,8 +24,22 @@ jobs:
           - channel: lts
             version: latest
           - channel: nightly
-            version: 1.1.0-alpha.20260321010029
+            version: 1.1.0-alpha.20260429010057
         archive-path: ["", archive.bin]
+        sdk_target: [""]
+        include:
+          - os: windows-latest
+            target:
+              channel: sts
+              version: 1.1.0
+            archive-path: ""
+            sdk_target: ohos
+          - os: windows-latest
+            target:
+              channel: nightly
+              version: 1.1.0-alpha.20260429010057
+            archive-path: ""
+            sdk_target: ohos
     steps:
       - uses: actions/checkout@v6
 
@@ -40,6 +54,7 @@ jobs:
         with:
           channel: ${{ matrix.target.channel }}
           version: ${{ matrix.target.version }}
+          target: ${{ matrix.sdk_target }}
           archive-path: ${{ matrix.archive-path }}
       - name: Verify setup
         shell: bash
