@@ -40,7 +40,7 @@
     "@types/node": "^25.7.0",
     "dotenv": "^17.4.2",
     "eslint": "^10.3.0",
-    "rollup": "^4.60.3",
+    "rollup": "^4.60.4",
     "rollup-plugin-visualizer": "^7.0.1",
     "smol-toml": "^1.6.1",
     "tsx": "^4.21.0",
