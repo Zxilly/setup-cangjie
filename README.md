@@ -62,10 +62,10 @@
 - uses: Zxilly/setup-cangjie@v3
   with:
     channel: lts
-    components: stdx # 多个用逗号分隔，例如 stdx,stdx-docs
+    components: stdx # 多个用逗号或空格分隔，例如 stdx,stdx-docs
 ```
 
-组件随工具链一并安装，其环境变量（如 stdx 的动态库路径）会自动注入到后续步骤。
+组件随工具链一并安装，其环境变量（如 stdx 的动态库路径）会自动注入到后续步骤。配合 `target` 交叉编译时，会安装并注入对应目标平台的 stdx。
 
 #### 配置中心仓 Token
 
