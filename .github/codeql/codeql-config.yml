@@ -1,0 +1,7 @@
+name: "CodeQL config"
+
+# dist/index.js is a generated, minified bundle of third-party dependencies
+# (built by rollup from src/). It is not hand-written source, so scanning it
+# only surfaces noise from vendored code. Analyze src/ instead.
+paths-ignore:
+  - dist
