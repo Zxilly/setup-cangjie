@@ -7,6 +7,7 @@ import { detectCangjieVersion } from "./utils";
 
 const CHANNELS = new Set(["lts", "sts", "nightly"]);
 const NIGHTLY_VERSION_RE = /(?:^|-)alpha\.\d{14}(?:$|-)/;
+const COMPONENT_SEPARATOR_RE = /[\s,]+/;
 
 export function looksLikeNightlyVersion(version: string): boolean {
   return NIGHTLY_VERSION_RE.test(version);
@@ -65,11 +66,26 @@ export async function resolveRequestedToolchain(channel: string, version: string
   return buildToolchainInput(channel, version);
 }
 
+export function parseComponents(input: string): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of input.split(COMPONENT_SEPARATOR_RE)) {
+    const name = raw.trim().toLowerCase();
+    if (!name || seen.has(name)) {
+      continue;
+    }
+    seen.add(name);
+    out.push(name);
+  }
+  return out;
+}
+
 export async function action() {
   let channel = core.getInput("channel");
   let version = core.getInput("version");
   const targetInput = core.getInput("target");
   const cjvVersion = core.getInput("cjv-version").trim() || "latest";
+  const components = parseComponents(core.getInput("components"));
 
   channel = channel.trim().toLowerCase();
   version = version.trim().toLowerCase();
@@ -84,6 +100,9 @@ export async function action() {
     const installArgs = ["install", toolchain];
     if (target) {
       installArgs.push("--target", target);
+    }
+    for (const component of components) {
+      installArgs.push("--component", component);
     }
 
     runCjv(cjvPath, installArgs, cjvEnv);

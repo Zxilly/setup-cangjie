@@ -17,6 +17,7 @@
 | version      | 需要安装的仓颉版本，例如 1.0.0，latest 表示最新版，auto 表示优先从 cjpm.toml 获取版本，否则为 latest。nightly 通道需要指定完整版本号 | 否       | auto   |
 | target       | 交叉编译目标后缀，例如 android、ohos、ios、ohos-arm32。留空表示安装当前 runner 的原生 SDK，不需要填写完整 toolchain key | 否       |        |
 | cjv-version  | 需要使用的 cjv 版本，例如 v1.2.3；latest 表示最新版                                                  | 否       | latest |
+| components   | 额外安装的组件，例如 stdx；多个用逗号或空格分隔。组件的环境变量会自动注入                            | 否       |        |
 | repo-token   | 仓颉中心仓认证 token，设置后会生成 `~/.cjpm/cangjie-repo.toml` 配置文件                              | 否       |        |
 
 ### 输出
@@ -54,6 +55,17 @@
     version: 1.1.0-alpha.20260106020001 # nightly 需要指定完整版本号
     target: ohos-arm32 # 可选，留空则安装原生 SDK
 ```
+
+#### 安装组件（如 stdx）
+
+```yaml
+- uses: Zxilly/setup-cangjie@v3
+  with:
+    channel: lts
+    components: stdx # 多个用逗号分隔，例如 stdx,stdx-docs
+```
+
+组件随工具链一并安装，其环境变量（如 stdx 的动态库路径）会自动注入到后续步骤。
 
 #### 配置中心仓 Token
 

@@ -67,3 +67,23 @@ jobs:
           # verifies the target environment is wired up (CANGJIE_HOME/PATH point
           # at the target SDK). A default cjpm project would target the cross
           # platform and can't be built/run meaningfully on the host runner.
+
+  verify-stdx:
+    name: Verify stdx component
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install with stdx component
+        uses: ./
+        with:
+          channel: lts
+          components: stdx
+      - name: Verify stdx environment is injected
+        shell: bash
+        run: |
+          cjc --version
+          : "${CANGJIE_STDX_PATH_DYNAMIC:?CANGJIE_STDX_PATH_DYNAMIC not injected}"
+          : "${CANGJIE_STDX_PATH_STATIC:?CANGJIE_STDX_PATH_STATIC not injected}"
+          echo "stdx dynamic: $CANGJIE_STDX_PATH_DYNAMIC"
+          echo "stdx static:  $CANGJIE_STDX_PATH_STATIC"
+          test -d "$CANGJIE_STDX_PATH_DYNAMIC" || { echo "stdx dynamic dir missing"; exit 1; }

@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test */
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildToolchainInput, extractInstalledVersion, looksLikeNightlyVersion, resolveRequestedToolchain } from "../src/action";
+import { buildToolchainInput, extractInstalledVersion, looksLikeNightlyVersion, parseComponents, resolveRequestedToolchain } from "../src/action";
 
 test("buildToolchainInput maps channel latest to cjv channel names", () => {
   assert.equal(buildToolchainInput("lts", "latest"), "lts");
@@ -41,6 +41,14 @@ test("resolveRequestedToolchain passes explicit versions straight through", asyn
 test("looksLikeNightlyVersion detects nightly tag shape", () => {
   assert.equal(looksLikeNightlyVersion("1.1.0-alpha.20260429010057"), true);
   assert.equal(looksLikeNightlyVersion("1.1.0"), false);
+});
+
+test("parseComponents splits, lowercases, dedupes and drops empties", () => {
+  assert.deepEqual(parseComponents(""), []);
+  assert.deepEqual(parseComponents("   "), []);
+  assert.deepEqual(parseComponents("stdx"), ["stdx"]);
+  assert.deepEqual(parseComponents("  Stdx , STDX-Docs  "), ["stdx", "stdx-docs"]);
+  assert.deepEqual(parseComponents("stdx docs stdx"), ["stdx", "docs"]);
 });
 
 test("extractInstalledVersion strips known channel prefixes", () => {

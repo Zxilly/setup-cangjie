@@ -21,6 +21,10 @@ inputs:
     description: 需要使用的 cjv 版本，例如 v1.2.3；使用 latest 表示最新版
     required: false
     default: latest
+  components:
+    description: 额外安装的组件，例如 stdx；多个用逗号或空格分隔。组件的环境变量会自动注入
+    required: false
+    default: ""
   repo-token:
     description: 仓颉中心仓认证 token (cangjie-repo.toml 中的 repository.home.token)
     required: false
