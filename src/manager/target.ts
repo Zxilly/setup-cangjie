@@ -17,7 +17,3 @@ export function normalizeTarget(target: string | undefined): string {
 
   return normalized;
 }
-
-export function createToolchainKey(platform: string, arch: string, target: string): string {
-  return target === "" ? `${platform}-${arch}` : `${platform}-${arch}-${target}`;
-}

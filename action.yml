@@ -17,9 +17,10 @@ inputs:
     description: 交叉编译目标后缀，例如 android, ohos, ios, ohos-arm32。留空表示安装当前 runner 的原生 SDK
     required: false
     default: ""
-  archive-path:
-    description: 下载的 .zip/.tar.gz 文件的存储路径
+  cjv-version:
+    description: 需要使用的 cjv 版本，例如 v1.2.3；使用 latest 表示最新版
     required: false
+    default: latest
   repo-token:
     description: 仓颉中心仓认证 token (cangjie-repo.toml 中的 repository.home.token)
     required: false

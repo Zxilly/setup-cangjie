@@ -25,20 +25,17 @@ jobs:
             version: latest
           - channel: nightly
             version: 1.1.0-alpha.20260429010057
-        archive-path: ["", archive.bin]
         sdk_target: [""]
         include:
           - os: windows-latest
             target:
               channel: sts
               version: 1.1.0
-            archive-path: ""
             sdk_target: ohos
           - os: windows-latest
             target:
               channel: nightly
               version: 1.1.0-alpha.20260429010057
-            archive-path: ""
             sdk_target: ohos
     steps:
       - uses: actions/checkout@v6
@@ -55,12 +52,18 @@ jobs:
           channel: ${{ matrix.target.channel }}
           version: ${{ matrix.target.version }}
           target: ${{ matrix.sdk_target }}
-          archive-path: ${{ matrix.archive-path }}
       - name: Verify setup
         shell: bash
         run: |
           cjc --version
-          mkdir cjbuild
-          cd cjbuild
-          cjpm init
-          cjpm run
+          if [ -z "${{ matrix.sdk_target }}" ]; then
+            # Native toolchain: build and run a sample project end-to-end.
+            mkdir cjbuild
+            cd cjbuild
+            cjpm init
+            cjpm run
+          fi
+          # For a cross-compile target SDK, `cjc --version` above already
+          # verifies the target environment is wired up (CANGJIE_HOME/PATH point
+          # at the target SDK). A default cjpm project would target the cross
+          # platform and can't be built/run meaningfully on the host runner.
