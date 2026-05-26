@@ -1,4 +1,4 @@
-name: "CodeQL config"
+name: CodeQL config
 
 # dist/index.js is a generated, minified bundle of third-party dependencies
 # (built by rollup from src/). It is not hand-written source, so scanning it
