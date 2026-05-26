@@ -28,7 +28,7 @@
 ### 示例
 
 ```yaml
-- uses: Zxilly/setup-cangjie@v2
+- uses: Zxilly/setup-cangjie@v3
   with:
     channel: lts # 'lts', 'sts' 或者 'nightly'
     version: 1.0.0 # 需要安装的仓颉版本，latest 表示最新版，auto 表示自动获取
@@ -38,7 +38,7 @@
 #### 交叉编译 SDK
 
 ```yaml
-- uses: Zxilly/setup-cangjie@v2
+- uses: Zxilly/setup-cangjie@v3
   with:
     channel: sts
     version: 1.1.0
@@ -48,7 +48,7 @@
 #### Nightly 版本
 
 ```yaml
-- uses: Zxilly/setup-cangjie@v2
+- uses: Zxilly/setup-cangjie@v3
   with:
     channel: nightly
     version: 1.1.0-alpha.20260106020001 # nightly 需要指定完整版本号
@@ -58,7 +58,7 @@
 #### 配置中心仓 Token
 
 ```yaml
-- uses: Zxilly/setup-cangjie@v2
+- uses: Zxilly/setup-cangjie@v3
   with:
     repo-token: ${{ secrets.CANGJIE_REPO_TOKEN }}
 ```
