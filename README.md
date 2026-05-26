@@ -16,7 +16,7 @@
 | channel      | 需要安装的仓颉版本通道，例如 lts, sts, nightly                                                       | 否       | lts    |
 | version      | 需要安装的仓颉版本，例如 1.0.0，latest 表示最新版，auto 表示优先从 cjpm.toml 获取版本，否则为 latest。nightly 通道需要指定完整版本号 | 否       | auto   |
 | target       | 交叉编译目标后缀，例如 android、ohos、ios、ohos-arm32。留空表示安装当前 runner 的原生 SDK，不需要填写完整 toolchain key | 否       |        |
-| archive-path | 下载的 .zip/.tar.gz 文件的存储路径                                                                   | 否       |        |
+| cjv-version  | 需要使用的 cjv 版本，例如 v1.2.3；latest 表示最新版                                                  | 否       | latest |
 | repo-token   | 仓颉中心仓认证 token，设置后会生成 `~/.cjpm/cangjie-repo.toml` 配置文件                              | 否       |        |
 
 ### 输出
@@ -32,7 +32,7 @@
   with:
     channel: lts # 'lts', 'sts' 或者 'nightly'
     version: 1.0.0 # 需要安装的仓颉版本，latest 表示最新版，auto 表示自动获取
-    archive-path: ./cangjie-archive # 可选，下载的压缩包存储路径
+    cjv-version: latest # 可选，指定 cjv 版本
 ```
 
 #### 交叉编译 SDK
