@@ -76,7 +76,8 @@ jobs:
       - name: Install with stdx component
         uses: ./
         with:
-          channel: lts
+          channel: sts
+          version: 1.1.0 # pinned to a version known to ship stdx, so the job is deterministic
           components: stdx
       - name: Verify stdx environment is injected
         shell: bash
@@ -87,3 +88,31 @@ jobs:
           echo "stdx dynamic: $CANGJIE_STDX_PATH_DYNAMIC"
           echo "stdx static:  $CANGJIE_STDX_PATH_STATIC"
           test -d "$CANGJIE_STDX_PATH_DYNAMIC" || { echo "stdx dynamic dir missing"; exit 1; }
+          test -d "$CANGJIE_STDX_PATH_STATIC" || { echo "stdx static dir missing"; exit 1; }
+
+  verify-stdx-target:
+    name: Verify stdx for cross-compile target
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install ohos target with stdx
+        uses: ./
+        with:
+          channel: sts
+          version: 1.1.0
+          target: ohos
+          components: stdx
+      - name: Verify target stdx environment is injected
+        shell: bash
+        run: |
+          : "${CANGJIE_STDX_PATH_DYNAMIC:?CANGJIE_STDX_PATH_DYNAMIC not injected for target}"
+          : "${CANGJIE_STDX_PATH_STATIC:?CANGJIE_STDX_PATH_STATIC not injected for target}"
+          echo "stdx dynamic: $CANGJIE_STDX_PATH_DYNAMIC"
+          echo "stdx static:  $CANGJIE_STDX_PATH_STATIC"
+          test -d "$CANGJIE_STDX_PATH_DYNAMIC" || { echo "stdx dynamic dir missing"; exit 1; }
+          # The stdx must be the target (ohos) stdx, keyed under the target SDK,
+          # not the host stdx — its path is scoped to the ohos target variant.
+          case "$CANGJIE_STDX_PATH_DYNAMIC" in
+            *ohos*) echo "target stdx correctly scoped to ohos" ;;
+            *) echo "stdx path not scoped to ohos target: $CANGJIE_STDX_PATH_DYNAMIC"; exit 1 ;;
+          esac
