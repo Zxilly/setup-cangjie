@@ -38,7 +38,7 @@ jobs:
               version: 1.1.0-alpha.20260429010057
             sdk_target: ohos
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install OpenSSL on macOS
         if: runner.os == 'macOS'
@@ -72,7 +72,7 @@ jobs:
     name: Verify stdx component
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install with stdx component
         uses: ./
         with:
@@ -94,7 +94,7 @@ jobs:
     name: Verify stdx for cross-compile target
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install ohos target with stdx
         uses: ./
         with:
